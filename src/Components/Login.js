@@ -19,9 +19,8 @@ const Login = () => {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-
       axios
-         .post('http://localhost:3000/auth/login/', {
+         .post('http://localhost:3001/auth/login', {
             username: formData.username,
             password: formData.password,
          })
@@ -83,8 +82,12 @@ const LoginForm = styled.form`
          width: 90%;
          margin: 1em;
          background: #99aab5;
+         outline: #4e5d94 2px solid;
          border: none;
-         outline: none;
+         transition: outline 185ms;
+         :focus {
+            outline: #ef99f7 2px solid;
+         }
 
          ::placeholder {
             color: #5a585e;
@@ -93,7 +96,7 @@ const LoginForm = styled.form`
 
       button {
          width: 50%;
-         height: 2em;
+         height: 2.3em;
          border-radius: 3px;
          border: none;
          background: #4e5d94;

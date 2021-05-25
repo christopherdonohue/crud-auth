@@ -32,7 +32,7 @@ exports.login = (req, res) => {
                message: 'Authentication Failed. Invalid User or Password!',
             });
          }
-         return res.json({
+         return res.status(200).json({
             token: jwt.sign(
                {
                   username: gamer.username,

@@ -39,7 +39,7 @@ const Boys = ({ gamers, setGamers, setHiddenProfiles, stack }) => {
    };
 
    const handleDrop = (e, index) => {
-      e.preventDefault();
+      e.preventDefault(); // This prevents image from opening in new tab on firefox
       temp = gamersClone[index];
       gamersClone[index] = gamersClone[tempIndex];
       gamersClone[tempIndex] = temp;

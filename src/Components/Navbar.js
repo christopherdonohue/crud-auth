@@ -12,9 +12,15 @@ const Navbar = () => {
             <li>
                <Link to='/about'>About</Link>
             </li>
+
             <RightSideNavButtons>
                <li>
                   <Link to='/login'>Login</Link>
+               </li>
+               <li>
+                  <RegisterDiv>
+                     <Link to='/register'>Sign Up</Link>
+                  </RegisterDiv>
                </li>
             </RightSideNavButtons>
          </ul>
@@ -24,14 +30,23 @@ const Navbar = () => {
 
 export default Navbar;
 
-const Nav = styled.nav`
+const Nav = styled.div`
+   position: relative;
+   text-align: center;
    display: flex;
    align-items: center;
    justify-content: flex-start;
    background-color: #4e5d94;
 `;
 
+const RegisterDiv = styled.div`
+   width: 6em;
+   height: 2.6em;
+`;
+
 const RightSideNavButtons = styled.div`
    position: absolute;
+   justify-content: flex-end;
    right: 2em;
+   height: 3em;
 `;

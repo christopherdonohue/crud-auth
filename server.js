@@ -27,11 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-   res.json({ message: 'Sup Bitch' });
+   res.json({ message: 'Welcome to the Internet' });
 });
 
 require('./src/Routes/gamer.routes.js')(app);
 
-app.listen(3000, () => {
-   console.log('Server is listening on port 3000');
+app.listen(3001, () => {
+   console.log('Server is listening on port 3001');
 });

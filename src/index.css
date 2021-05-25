@@ -34,9 +34,10 @@ li a {
    text-align: center;
    padding: 14px 16px;
    text-decoration: none;
+   transition: background 185ms;
 }
 
 li a:hover {
-   background-color: #99aab5;
+   background: #99aab5;
    color: #23272a;
 }
