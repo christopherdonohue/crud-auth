@@ -9,6 +9,7 @@ const Login = () => {
    };
 
    const [formData, setFormData] = useState({ username: '', password: '' });
+   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 
    const handleChange = (e) => {
       setFormData({
@@ -25,7 +26,10 @@ const Login = () => {
             password: formData.password,
          })
          .then((res) => {
-            console.log('User Successfully Authorized.');
+            console.log(
+               `User ${formData.username} Successfully Authenticated.`
+            );
+            setUserIsAuthenticated(true);
             return res.data;
          })
          .catch((err) => {

@@ -46,7 +46,21 @@ exports.login = (req, res) => {
 };
 
 // Create and Save a new Note
-exports.create = (req, res) => {};
+exports.create = (req, res) => {
+   console.log(req.token);
+   jwt.verify(req.token, 'secret', (err, authorizedData) => {
+      if (err) {
+         console.log(err);
+         res.sendStatus(403);
+      } else {
+         res.status(200).json({
+            message: 'SUCCESS: Connected to protected route',
+            authorizedData,
+         });
+         console.log('SUCCESS: Connected to protected route');
+      }
+   });
+};
 
 // Retrieve and return all notes from the database.
 exports.findAll = (req, res) => {};
