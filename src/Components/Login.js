@@ -34,7 +34,7 @@ const Login = () => {
          })
          .then((res) => {
             console.log(
-               `User ${formData.username} Successfully Authenticated.`
+               `User ${formData.username} Successfully Authenticated!`
             );
             setUserIsAuthenticated(true);
             return res.data;
