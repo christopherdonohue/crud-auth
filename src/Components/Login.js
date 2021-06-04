@@ -1,7 +1,14 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { useState } from 'react';
+import { Redirect } from 'react-router';
 import axios from 'axios';
+import {
+   Form,
+   FormContainer,
+   StyleWrapper,
+   SubmitButton,
+} from './StyledComponents/formStyles';
 
 const Login = () => {
    const theme = {
@@ -38,110 +45,39 @@ const Login = () => {
    };
 
    return (
-      <ThemeProvider theme={theme}>
-         <StyleWrapper>
-            <LoginContainer>
-               <LoginForm onSubmit={handleSubmit}>
-                  <h3>Login</h3>
-                  <div className='input-container'>
-                     <input
-                        type='text'
-                        placeholder='Username'
-                        name='username'
-                        onChange={handleChange}
-                     />
-                     <input
-                        type='password'
-                        placeholder='Password'
-                        name='password'
-                        onChange={handleChange}
-                     />
-                     <button type='submit'>Submit</button>
-                  </div>
-               </LoginForm>
-            </LoginContainer>
-         </StyleWrapper>
-      </ThemeProvider>
+      <>
+         {userIsAuthenticated ? (
+            <Redirect to='/' />
+         ) : (
+            <ThemeProvider theme={theme}>
+               <StyleWrapper>
+                  <FormContainer>
+                     <Form onSubmit={handleSubmit}>
+                        <h3>Login</h3>
+                        <div className='input-container'>
+                           <input
+                              type='text'
+                              placeholder='Username'
+                              name='username'
+                              onChange={handleChange}
+                           />
+                           <input
+                              type='password'
+                              placeholder='Password'
+                              name='password'
+                              onChange={handleChange}
+                           />
+                           <SubmitButton marginTop={`8em`} type='submit'>
+                              Submit
+                           </SubmitButton>
+                        </div>
+                     </Form>
+                  </FormContainer>
+               </StyleWrapper>
+            </ThemeProvider>
+         )}
+      </>
    );
 };
 
 export default Login;
-
-const LoginForm = styled.form`
-   color: #99aab5;
-
-   position: absolute;
-   height: 90%;
-   width: 95%;
-   margin: 1em;
-
-   h3 {
-      letter-spacing: 2px;
-      font-style: italic;
-   }
-
-   .input-container {
-      input {
-         height: 2em;
-         width: 90%;
-         margin: 1em;
-         background: #99aab5;
-         outline: #4e5d94 2px solid;
-         border: none;
-         transition: outline 185ms;
-         :focus {
-            outline: #ef99f7 2px solid;
-         }
-
-         ::placeholder {
-            color: #5a585e;
-         }
-      }
-
-      button {
-         width: 50%;
-         height: 2.3em;
-         border-radius: 3px;
-         border: none;
-         background: #4e5d94;
-         color: white;
-         margin-top: 8em;
-
-         :hover {
-            cursor: pointer;
-         }
-         :active {
-            background: #99aab5;
-         }
-      }
-      height: 80%;
-      width: auto;
-      display: flex;
-      flex-flow: column nowrap;
-      justify-content: flex-start;
-      align-items: center;
-   }
-`;
-
-const StyleWrapper = styled.div`
-   display: flex;
-   flex-flow: column nowrap;
-   width: 100%;
-   height: 95vh;
-   background: ${({ theme }) => theme.main};
-`;
-
-const LoginContainer = styled.div`
-   display: flex;
-   flex-flow: column nowrap;
-   justify-content: flex-start;
-   align-items: center;
-   background: #2c2f33;
-   box-shadow: 3px 3px 2px 1px #23272a;
-   text-align: center;
-   width: 18%;
-   height: 40%;
-   margin: 10em auto;
-   min-width: 200px;
-   position: relative;
-`;
