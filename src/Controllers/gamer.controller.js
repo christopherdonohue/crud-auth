@@ -63,7 +63,16 @@ exports.create = (req, res) => {
 };
 
 // Retrieve and return all notes from the database.
-exports.findAll = (req, res) => {};
+exports.findAll = (req, res) => {
+    Gamer.find({}, (err, gamers) => {
+      if (err) throw err;
+      if (gamers) {
+         console.log(gamers)
+          res.status(200).send(gamers);
+      }
+
+   });
+};
 
 // Find a single note with a noteId
 exports.findOne = (req, res) => {};

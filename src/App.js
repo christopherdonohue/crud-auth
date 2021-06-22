@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Gamers from './Gamers';
 import Boys from './Components/Boys';
 import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components';
+import axios from 'axios';
 var stack = [];
 
 function App() {
@@ -10,11 +11,20 @@ function App() {
       main: '#738ADB',
    };
 
-   const [gamers, setGamers] = useState(Gamers);
+   const [gamers, setGamers] = useState([]);
    const [, setHiddenProfiles] = useState([]);
 
-   let undoButton = gamers.filter((gamer) => gamer.showProfile === false);
+   //let undoButton = gamers.filter((gamer) => gamer.showProfile === false);
 
+   useEffect(() => {
+   axios.get(('http://localhost:3001/auth/findAll')).then((res) => {
+     console.log(res)
+     setGamers(res.data)
+      }).then((err) => {
+     return err;
+  })
+   },[])
+  
    return (
       <>
          <ThemeProvider theme={theme}>
@@ -27,11 +37,11 @@ function App() {
                   />
                   <span>SOCIAL MEDIA ON THE WORLD WIDE WEB</span>
                </Title>
-               {undoButton.length > 0 && (
+               {/* {undoButton.length > 0 && (
                   <UndoButton onClick={() => setGamers(stack.pop())}>
                      Undo
                   </UndoButton>
-               )}
+               )} */}
                <Container className='gamerImage'>
                   <Boys
                      gamers={gamers}

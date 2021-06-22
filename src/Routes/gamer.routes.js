@@ -21,6 +21,8 @@ module.exports = (app) => {
 
    app.get('/auth/create', checkToken, gamers.create);
 
+   app.get('/auth/findAll', gamers.findAll)
+
    //    app.get('gamers/:gamerId', gamers.findOne);
 
    //    app.put('/gamers/:gamerId', gamers.update);
