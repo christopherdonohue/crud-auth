@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { cloneDeep } from "lodash";
 
 const Boys = ({ gamers, setGamers, setHiddenProfiles, stack }) => {
+  const [textArea, setTextArea] = useState("");
+
   const handleClick = (id, whichClick) => {
     setGamers(
       // eslint-disable-next-line array-callback-return
@@ -47,67 +49,52 @@ const Boys = ({ gamers, setGamers, setHiddenProfiles, stack }) => {
     setGamers(gamersClone);
   };
 
+  const submitText = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        "http://localhost:3001/auth/create",
+        { data: textArea },
+        {
+          headers: {
+            authorization: `token: ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
   useEffect(() => {
     console.log(gamers);
   }, []);
 
   return (
-    // <>
-
-    //    {gamers.map((gamer, index) => {
-    //       const { id, firstName, imageUrl, classType, Description } = gamer;
-    <div>
+    <>
       {gamers.map((item) => {
-        return <h2>{item.username}</h2>;
+        return (
+          <>
+            <BoyStyle>
+              <Profile>
+                <h2>{item.username}</h2>
+                <p>{textArea}</p>
+                <form onSubmit={submitText}>
+                  <textarea
+                    name="textArea"
+                    onChange={(e) => setTextArea(e.target.value)}
+                  ></textarea>
+                  <input type="submit" />
+                </form>
+              </Profile>
+            </BoyStyle>
+          </>
+        );
       })}
-    </div>
-    // return (
-    //    gamer.showProfile && (
-    //       <BoyStyle key={id} className='boyStyle'>
-    //          <img
-    //             draggable='true'
-    //             onDragStart={() => handleDragStart(index)}
-    //             onDragOver={(e) => handleDragOver(e)}
-    //             onDrop={(e) => handleDrop(e, index)}
-    //             src={imageUrl}
-    //             alt='Gamer'
-    //             onClick={() => handleClick(id, 'single')}
-    //             onDoubleClick={() => handleClick(id, 'double')}
-    //          ></img>
-    //          <h2>{firstName}</h2>
-    //          {gamer.viewProfile && (
-    //             <Profile>
-    //                <h4
-    //                   className={
-    //                      classType === 'Grand Master'
-    //                         ? 'grandMaster'
-    //                         : 'master'
-    //                   }
-    //                >
-    //                   {classType}
-    //                </h4>
-
-    //                <p>{Description}</p>
-
-    //                <Link
-    //                   style={{
-    //                      color:
-    //                         classType === 'Grand Master'
-    //                            ? 'rgb(52, 152, 219)'
-    //                            : 'rgb(245, 207, 250)',
-    //                      textDecoration: 'none',
-    //                   }}
-    //                   to={`/profile/${id}`}
-    //                >
-    //                   View Profile
-    //                </Link>
-    //             </Profile>
-    //          )}
-    //       </BoyStyle>
-    //    )
-    // );
-    // })}
-    // </>
+    </>
   );
 };
 
