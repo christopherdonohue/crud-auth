@@ -38,7 +38,8 @@ exports.login = (req, res) => {
             username: gamer.username,
             firstName: gamer.firstName,
           },
-          "secret"
+          "secret",
+          { expiresIn: "1 hour" }
         ),
       });
     }
@@ -54,15 +55,19 @@ exports.create = (req, res) => {
       res.sendStatus(403);
     } else {
       res.status(200).json({
-        message: "SUCCESS: Connected to protected route",
+        message: "Permission Granted.",
         authorizedData,
       });
       Gamer.updateOne(
         { username: authorizedData.username },
         { $push: { posts: req.body.data } }
-      ).then((res) => {
-        return res;
-      });
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          return err;
+        });
     }
   });
 };

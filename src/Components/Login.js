@@ -1,5 +1,4 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
 import { useState } from "react";
 import { Redirect } from "react-router";
 import axios from "axios";
@@ -11,10 +10,6 @@ import {
 } from "./StyledComponents/formStyles";
 
 const Login = () => {
-  const theme = {
-    main: "#738ADB",
-  };
-
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 
@@ -48,32 +43,30 @@ const Login = () => {
       {userIsAuthenticated ? (
         <Redirect to="/" />
       ) : (
-        <ThemeProvider theme={theme}>
-          <StyleWrapper>
-            <FormContainer>
-              <Form onSubmit={handleSubmit}>
-                <h3>Login</h3>
-                <div className="input-container">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    name="username"
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    onChange={handleChange}
-                  />
-                  <SubmitButton marginTop={`8em`} type="submit">
-                    Submit
-                  </SubmitButton>
-                </div>
-              </Form>
-            </FormContainer>
-          </StyleWrapper>
-        </ThemeProvider>
+        <StyleWrapper>
+          <FormContainer>
+            <Form onSubmit={handleSubmit}>
+              <h3>Login</h3>
+              <div className="input-container">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  name="username"
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  onChange={handleChange}
+                />
+                <SubmitButton marginTop={`8em`} type="submit">
+                  Submit
+                </SubmitButton>
+              </div>
+            </Form>
+          </FormContainer>
+        </StyleWrapper>
       )}
     </>
   );
