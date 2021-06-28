@@ -4,6 +4,7 @@ import Boys from "./Components/Boys";
 import styled from "styled-components";
 import axios from "axios";
 import { gamersContext } from "./Components/Contexts/GamersContext";
+require("dotenv").config();
 
 function App() {
   const { setNewUserRegistered } = useContext(gamersContext);

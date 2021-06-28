@@ -12,6 +12,7 @@ import { GamersContext } from "./Components/Contexts/GamersContext";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
+require("dotenv").config();
 
 ReactDOM.render(
   <React.StrictMode>
