@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const dbConfig = require("./Config/database.config");
+const dbConfig = require("./Config/db.config");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
