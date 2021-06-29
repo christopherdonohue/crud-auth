@@ -12,6 +12,7 @@ function App() {
   const [userAuthorized, setUserAuthorized] = useState(true);
 
   const submitText = (e) => {
+    console.log(`helllo`);
     e.preventDefault();
     axios
       .post(
@@ -52,13 +53,13 @@ function App() {
         <Container className="gamerImage">
           <Boys />
         </Container>
-        <form onSubmit={submitText}>
+        <Form onSubmit={submitText}>
           <textarea
             name="textArea"
             onChange={(e) => setTextArea(e.target.value)}
           ></textarea>
-          <input type="submit" />
-        </form>
+          <input type="submit" value="Submit" />
+        </Form>
       </StyleWrapper>
     </>
   );
@@ -69,6 +70,8 @@ export default App;
 const StyleWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 95vh;
   background: ${({ theme }) => theme.main};
@@ -89,4 +92,51 @@ const Container = styled.div`
   align-items: baseline;
   flex-wrap: wrap;
   padding: 10px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  height: 120px;
+  padding: 0.5em;
+  background: #2c2f33;
+  border-radius: 3px;
+  box-shadow: 3px 3px 2px 1px #23272a;
+
+  textarea {
+    width: 90%;
+    height: 50%;
+    background: #99aab5;
+    outline: none;
+    border: 2px solid #99aab5;
+    border-radius: 1px;
+    text-decoration: none;
+    transition: border 200ms;
+    :focus {
+      border: 2px solid #ef99f7;
+    }
+  }
+
+  input {
+    padding: 4px;
+    width: 95%;
+    margin-top: 1em;
+    background: none;
+    color: ${({ theme }) => theme.main};
+    font-weight: bolder;
+    border: 2px solid ${({ theme }) => theme.main};
+    outline: none;
+    text-decoration: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 200ms, color 200ms;
+
+    :hover {
+      background: ${({ theme }) => theme.main};
+      color: white;
+    }
+  }
 `;

@@ -13,6 +13,7 @@ const Posts = () => {
   useEffect(() => {
     let postsArray = [];
     if (gamers) {
+      console.log("yooooo");
       gamers.map((gamer) => {
         const { posts } = gamer;
         return posts.map((post) => {
@@ -22,7 +23,7 @@ const Posts = () => {
       setPosts(postsArray);
     }
     return () => setNewUserRegistered(false);
-  }, [newUserRegistered]);
+  }, [newUserRegistered, gamers]);
 
   return (
     <Container>

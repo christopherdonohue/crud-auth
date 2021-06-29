@@ -23,7 +23,12 @@ export const GamersContext = (props) => {
 
   return (
     <gamersContext.Provider
-      value={{ gamers, setGamers, newUserRegistered, setNewUserRegistered }}
+      value={{
+        gamers,
+        setGamers,
+        newUserRegistered,
+        setNewUserRegistered,
+      }}
     >
       {props.children}
     </gamersContext.Provider>

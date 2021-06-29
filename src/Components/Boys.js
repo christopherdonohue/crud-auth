@@ -26,9 +26,8 @@ const Boys = () => {
 export default Boys;
 
 const BoyStyle = styled.div`
-  flex: 1 1 0px;
   text-align: center;
-  margin: 0.5em;
+  margin: 1em;
   max-width: 300px;
   img {
     padding-top: 5px;
