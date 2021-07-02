@@ -12,12 +12,11 @@ function App() {
   const [userAuthorized, setUserAuthorized] = useState(true);
 
   const submitText = (e) => {
-    console.log(`helllo`);
     e.preventDefault();
     axios
       .post(
         "http://localhost:3001/auth/create",
-        { data: textArea },
+        { data: textArea, datePosted: Date.now() },
         {
           headers: {
             authorization: `token: ${localStorage.getItem("token")}`,
@@ -74,7 +73,11 @@ const StyleWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 95vh;
-  background: ${({ theme }) => theme.main};
+  background: linear-gradient(
+    to bottom right,
+    #4e5d94,
+    ${({ theme }) => theme.main} 70%
+  );
 `;
 
 const Title = styled.h1`

@@ -6,7 +6,7 @@ const GamerSchema = mongoose.Schema(
     firstName: String,
     username: String,
     hashPassword: String,
-    posts: [],
+    posts: [{}],
   },
   {
     timestamps: true,
