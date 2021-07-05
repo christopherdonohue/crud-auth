@@ -22,7 +22,13 @@ module.exports = (app) => {
 
   app.get("/auth/findAll", gamers.findAll);
 
-  //    app.get('gamers/:gamerId', gamers.findOne);
+  app.post("/gamers/findOne", checkToken, gamers.findOne);
+
+  app.post(
+    "/gamers/uploadProfilePicture",
+    checkToken,
+    gamers.uploadProfilePicture
+  );
 
   //    app.put('/gamers/:gamerId', gamers.update);
 

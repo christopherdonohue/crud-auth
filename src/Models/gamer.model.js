@@ -7,6 +7,7 @@ const GamerSchema = mongoose.Schema(
     username: String,
     hashPassword: String,
     posts: [{}],
+    profilePicture: String,
   },
   {
     timestamps: true,

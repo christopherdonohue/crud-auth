@@ -35,6 +35,7 @@ exports.login = (req, res) => {
       return res.status(200).json({
         token: jwt.sign(
           {
+            id: gamer._id,
             username: gamer.username,
             firstName: gamer.firstName,
           },
@@ -88,7 +89,51 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single note with a noteId
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+  jwt.verify(req.token, "secret", (err, authorizedData) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(403);
+    } else {
+      // res.status(200).json({
+      //   message: "Permission Granted.",
+      //   authorizedData,
+      // });
+      Gamer.findById(authorizedData.id, (err, gamer) => {
+        if (err) throw err;
+        res.status(200).json({ gamer });
+      });
+    }
+  });
+};
+
+exports.uploadProfilePicture = (req, res) => {
+  jwt.verify(req.token, "secret", (err, authorizedData) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(403);
+    } else {
+      // res.status(200).json({
+      //   message: "Permission Granted.",
+      //   authorizedData,
+      // });
+      Gamer.updateOne(
+        { _id: authorizedData.id },
+        {
+          $set: {
+            profilePicture: req.body.profilePicture,
+          },
+        }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          return err;
+        });
+    }
+  });
+};
 
 // Update a note identified by the noteId in the request
 exports.update = (req, res) => {};

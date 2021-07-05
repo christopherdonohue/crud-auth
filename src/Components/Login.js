@@ -17,8 +17,6 @@ const Login = () => {
   const [toastNotification, setToastNotification] = useState(
     location.state ? location.state.toast : {}
   );
-
-  console.log(toastNotification);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 

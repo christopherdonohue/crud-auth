@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router";
 import Boys from "./Components/Boys";
 import styled from "styled-components";

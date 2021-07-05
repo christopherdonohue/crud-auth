@@ -33,10 +33,7 @@ ReactDOM.render(
             <Route path="/register">
               <Register />
             </Route>
-            <Route
-              path="/profile"
-              render={(props) => <GamerProfile {...props} />}
-            ></Route>
+            <Route path="/profile/:id" children={<GamerProfile />} />
             <Route path="*">
               <ErrorPage />
             </Route>
