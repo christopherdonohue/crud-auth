@@ -2,6 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useState, useRef, useEffect, useContext } from "react";
 import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import {
   Form,
@@ -25,6 +26,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +44,12 @@ const Register = () => {
       })
       .then((res) => {
         console.log(`Successfully registered ${formData.username}!`);
-        setNewUserRegistered(true);
+        setToastNotification({
+          message: `Registration Successful, Please Sign in to Continue`,
+          color: `rgba(21, 104, 73)`,
+          background: `rgba(0,255,0,0.5)`,
+          type: `Success`,
+        });
         return res.data;
       })
       .catch((err) => {
@@ -53,40 +60,20 @@ const Register = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value.trim() });
-
-    // if (
-    //   e.target.name === `password` &&
-    //   !passwordPattern.test(e.target.value.trim())
-    // ) {
-    //   setToastNotification({
-    //     message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
-    //     type: `Error`,
-    //     color: `darkred`,
-    //     background: `rgba(255,0,0,0.2)`,
-    //   });
-    // } else if (
-    //   (e.target.name === `confirmPassword` || e.target.name === `password`) &&
-    //   e.target.value.trim() !== formData.password
-    // ) {
-    //   setToastNotification({
-    //     ...toastNotification,
-    //     message: `Passwords Don't Match.`,
-    //     type: `Error`,
-    //     color: `darkred`,
-    //     background: `rgba(255,0,0,0.2)`,
-    //   });
-    // } else if (
-    //   e.target.name === `confirmPassword` &&
-    //   !passwordPattern.test(formData.password)
-    // ) {
-    //   setToastNotification({
-    //     ...toastNotification,
-    //     message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
-    //   });
-    // } else {
-    //   setToastNotification({});
-    // }
   };
+
+  useEffect(() => {
+    if (toastNotification.type === `Success`) {
+      history.push({
+        pathname: "/login",
+        state: { toast: toastNotification },
+      });
+    }
+    return () =>
+      setTimeout(() => {
+        setToastNotification({});
+      }, 10000);
+  }, [toastNotification]);
 
   useEffect(() => {
     if (

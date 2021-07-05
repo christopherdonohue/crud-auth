@@ -1,7 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Redirect } from "react-router";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
 import {
   Form,
   FormContainer,
@@ -10,6 +12,13 @@ import {
 } from "./StyledComponents/formStyles";
 
 const Login = () => {
+  const location = useLocation();
+
+  const [toastNotification, setToastNotification] = useState(
+    location.state ? location.state.toast : {}
+  );
+
+  console.log(toastNotification);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 
@@ -34,9 +43,24 @@ const Login = () => {
         return res.data;
       })
       .catch((err) => {
+        setToastNotification({
+          message: `Incorrect Username or Password`,
+          color: `rgba(80,0,0)`,
+          background: `rgba(255,0,0,0.55)`,
+          type: `Error`,
+        });
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    if (toastNotification.message) {
+      console.log(`timeout login`);
+      setTimeout(() => {
+        setToastNotification({});
+      }, 10000);
+    }
+  }, [toastNotification]);
 
   return (
     <>
@@ -45,6 +69,14 @@ const Login = () => {
       ) : (
         <StyleWrapper>
           <FormContainer>
+            {toastNotification.message && (
+              <Toast
+                color={toastNotification.color}
+                background={toastNotification.background}
+              >
+                {<p>{toastNotification.message}</p>}
+              </Toast>
+            )}
             <Form onSubmit={handleSubmit}>
               <h3>Login</h3>
               <div className="input-container">
@@ -73,3 +105,17 @@ const Login = () => {
 };
 
 export default Login;
+
+const Toast = styled.div`
+  position: absolute;
+  width: 200px;
+  top: 0;
+  padding: 4px;
+  transform: translateY(-110%);
+  border: 2px solid ${({ color }) => `${color}`};
+  background: ${({ background }) => `${background}`};
+  color: ${({ color }) => `${color}`};
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+`;
