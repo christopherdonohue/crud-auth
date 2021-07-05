@@ -33,8 +33,6 @@ export default GamerProfile;
 const StyleWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  width: 100%;
-  height: 95vh;
   background: ${({ theme }) => theme.main};
 `;
 

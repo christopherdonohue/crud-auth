@@ -71,8 +71,8 @@ const StyleWrapper = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 95vh;
+  min-width: 95vw;
+  min-height: 95vh;
   background: linear-gradient(
     to bottom right,
     #4e5d94,

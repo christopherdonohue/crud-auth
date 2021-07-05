@@ -58,6 +58,7 @@ const Card = styled.div`
   margin: 1em;
   padding: 10px;
   background: #2c2f33;
+  min-width: 100px;
   max-width: 300px;
   min-height: 150px;
   text-align: center;
@@ -72,9 +73,10 @@ const Card = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: center;
-
-  width: 100%;
-  height: 95vh;
+  align-items: flex-start;
+  flex-flow: row wrap;
+  min-width: 95vw;
+  min-height: 95vh;
   background: linear-gradient(
     to bottom right,
     #4e5d94,

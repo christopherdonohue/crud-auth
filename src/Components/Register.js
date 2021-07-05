@@ -12,10 +12,13 @@ import {
 import { gamersContext } from "./Contexts/GamersContext";
 
 const Register = () => {
+  const passwordPattern =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\[-`{-~]).{6,64}$/;
   const { setNewUserRegistered, newUserRegistered } = useContext(gamersContext);
 
   //let allFieldsInFormFilled = useRef(false);
   const [allFieldsInFormFilled, setAllFieldsInFormFilled] = useState(false);
+  const [toastNotification, setToastNotification] = useState({});
   const [formData, setFormData] = useState({
     firstName: "",
     username: "",
@@ -50,6 +53,39 @@ const Register = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value.trim() });
+
+    // if (
+    //   e.target.name === `password` &&
+    //   !passwordPattern.test(e.target.value.trim())
+    // ) {
+    //   setToastNotification({
+    //     message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
+    //     type: `Error`,
+    //     color: `darkred`,
+    //     background: `rgba(255,0,0,0.2)`,
+    //   });
+    // } else if (
+    //   (e.target.name === `confirmPassword` || e.target.name === `password`) &&
+    //   e.target.value.trim() !== formData.password
+    // ) {
+    //   setToastNotification({
+    //     ...toastNotification,
+    //     message: `Passwords Don't Match.`,
+    //     type: `Error`,
+    //     color: `darkred`,
+    //     background: `rgba(255,0,0,0.2)`,
+    //   });
+    // } else if (
+    //   e.target.name === `confirmPassword` &&
+    //   !passwordPattern.test(formData.password)
+    // ) {
+    //   setToastNotification({
+    //     ...toastNotification,
+    //     message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
+    //   });
+    // } else {
+    //   setToastNotification({});
+    // }
   };
 
   useEffect(() => {
@@ -62,6 +98,25 @@ const Register = () => {
       console.log(formData);
       setAllFieldsInFormFilled(true);
     }
+    if (formData.password || formData.confirmPassword) {
+      if (!passwordPattern.test(formData.password)) {
+        setToastNotification({
+          message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
+          type: `Error`,
+          color: `rgba(80,0,0)`,
+          background: `rgba(255,0,0,0.55)`,
+        });
+      } else if (formData.password !== formData.confirmPassword) {
+        setToastNotification({
+          message: `Passwords Don't Match`,
+          type: `Error`,
+          color: `rgba(80,0,0)`,
+          background: `rgba(255,0,0,0.55)`,
+        });
+      } else {
+        setToastNotification({});
+      }
+    }
 
     return () => setAllFieldsInFormFilled(false);
   }, [formData]);
@@ -73,6 +128,14 @@ const Register = () => {
       ) : (
         <StyleWrapper>
           <FormContainer>
+            {toastNotification.message && (
+              <Toast
+                color={toastNotification.color}
+                background={toastNotification.background}
+              >
+                {<p>{toastNotification.message}</p>}
+              </Toast>
+            )}
             <Form onSubmit={handleSubmit}>
               <h3>Register</h3>
               <div className="input-container">
@@ -102,8 +165,18 @@ const Register = () => {
                 />
                 <SubmitButton
                   type="submit"
-                  pointerEvents={!allFieldsInFormFilled && `none`}
-                  opacity={!allFieldsInFormFilled && `0.7`}
+                  pointerEvents={
+                    (!allFieldsInFormFilled ||
+                      (toastNotification.type &&
+                        toastNotification.type === `Error`)) &&
+                    `none`
+                  }
+                  opacity={
+                    (!allFieldsInFormFilled ||
+                      (toastNotification.type &&
+                        toastNotification.type === `Error`)) &&
+                    `0.5`
+                  }
                   marginTop={`3em`}
                 >
                   Submit
@@ -118,3 +191,16 @@ const Register = () => {
 };
 
 export default Register;
+
+const Toast = styled.div`
+  position: absolute;
+  width: 200px;
+  top: 0;
+  transform: translateY(-110%);
+  border: 2px solid ${({ color }) => `${color}`};
+  background: ${({ background }) => `${background}`};
+  color: ${({ color }) => `${color}`};
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+`;
