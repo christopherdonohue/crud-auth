@@ -8,6 +8,7 @@ export const GamersContext = (props) => {
   const [newUserRegistered, setNewUserRegistered] = useState(false);
 
   useEffect(() => {
+    console.log(`getting gamers`);
     axios
       .get("http://localhost:3001/auth/findAll")
       .then((res) => {

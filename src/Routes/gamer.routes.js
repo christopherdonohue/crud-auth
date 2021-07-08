@@ -20,6 +20,8 @@ module.exports = (app) => {
 
   app.post("/auth/create", checkToken, gamers.create);
 
+  app.post("/auth/description", checkToken, gamers.description);
+
   app.get("/auth/findAll", gamers.findAll);
 
   app.post("/gamers/findOne", checkToken, gamers.findOne);

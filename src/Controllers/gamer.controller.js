@@ -49,7 +49,6 @@ exports.login = (req, res) => {
 
 // Create and Save a new Note
 exports.create = (req, res) => {
-  console.log(req.token);
   jwt.verify(req.token, "secret", (err, authorizedData) => {
     if (err) {
       console.log(err);
@@ -64,6 +63,34 @@ exports.create = (req, res) => {
         {
           $push: {
             posts: { postBody: req.body.data, datePosted: req.body.datePosted },
+          },
+        }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          return err;
+        });
+    }
+  });
+};
+
+exports.description = (req, res) => {
+  jwt.verify(req.token, "secret", (err, authorizedData) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(403);
+    } else {
+      res.status(200).json({
+        message: "Permission Granted.",
+        authorizedData,
+      });
+      Gamer.updateOne(
+        { _id: authorizedData.id },
+        {
+          $set: {
+            description: req.body.data,
           },
         }
       )
@@ -113,10 +140,10 @@ exports.uploadProfilePicture = (req, res) => {
       console.log(err);
       res.sendStatus(403);
     } else {
-      // res.status(200).json({
-      //   message: "Permission Granted.",
-      //   authorizedData,
-      // });
+      res.status(200).json({
+        message: "Permission Granted.",
+        authorizedData,
+      });
       Gamer.updateOne(
         { _id: authorizedData.id },
         {

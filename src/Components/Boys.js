@@ -68,6 +68,7 @@ const BoyStyle = styled.div`
   text-align: center;
   margin: 1em;
   max-width: 300px;
+
   img {
     padding-top: 5px;
     border-radius: 50%;
