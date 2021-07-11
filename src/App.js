@@ -52,13 +52,15 @@ function App() {
         <Container className="gamerImage">
           <Boys />
         </Container>
-        <Form onSubmit={submitText}>
-          <textarea
-            name="textArea"
-            onChange={(e) => setTextArea(e.target.value)}
-          ></textarea>
-          <input type="submit" value="Submit" />
-        </Form>
+        {userAuthorized && (
+          <Form onSubmit={submitText}>
+            <textarea
+              name="textArea"
+              onChange={(e) => setTextArea(e.target.value)}
+            ></textarea>
+            <input type="submit" value="Submit" />
+          </Form>
+        )}
       </StyleWrapper>
     </>
   );
@@ -107,7 +109,7 @@ const Form = styled.form`
   padding: 0.5em;
   background: #2c2f33;
   border-radius: 3px;
-  box-shadow: 3px 3px 2px 1px #23272a;
+  box-shadow: 3px 5px 4px 1px #23272a;
 
   textarea {
     width: 90%;

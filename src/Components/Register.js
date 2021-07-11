@@ -50,6 +50,7 @@ const Register = () => {
           background: `rgba(0,255,0,0.5)`,
           type: `Success`,
         });
+        setNewUserRegistered(true);
         return res.data;
       })
       .catch((err) => {
@@ -68,11 +69,12 @@ const Register = () => {
         pathname: "/login",
         state: { toast: toastNotification },
       });
+
+      return () =>
+        setTimeout(() => {
+          setToastNotification({});
+        }, 10000);
     }
-    return () =>
-      setTimeout(() => {
-        setToastNotification({});
-      }, 10000);
   }, [toastNotification]);
 
   useEffect(() => {

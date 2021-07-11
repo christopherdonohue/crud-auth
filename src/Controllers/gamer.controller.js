@@ -1,6 +1,9 @@
 const Gamer = require("../Models/gamer.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { privateKey } = JSON.parse(process.env.JWT_PRIVATE_KEY);
+const { publicKey } = JSON.parse(process.env.JWT_PUBLIC_KEY);
+require("dotenv").config();
 
 exports.register = (req, res) => {
   const newGamer = new Gamer(req.body);
@@ -39,72 +42,83 @@ exports.login = (req, res) => {
             username: gamer.username,
             firstName: gamer.firstName,
           },
-          "secret",
-          { expiresIn: "1 hour" }
+          privateKey,
+          { expiresIn: "1 hour", algorithm: "RS256" }
         ),
       });
     }
   );
 };
 
-// Create and Save a new Note
 exports.create = (req, res) => {
-  jwt.verify(req.token, "secret", (err, authorizedData) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-    } else {
-      res.status(200).json({
-        message: "Permission Granted.",
-        authorizedData,
-      });
-      Gamer.updateOne(
-        { username: authorizedData.username },
-        {
-          $push: {
-            posts: { postBody: req.body.data, datePosted: req.body.datePosted },
-          },
-        }
-      )
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          return err;
+  jwt.verify(
+    req.token,
+    publicKey,
+    { algorithm: ["RS256"] },
+    (err, authorizedData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        res.status(200).json({
+          message: "Permission Granted.",
+          authorizedData,
         });
+        Gamer.updateOne(
+          { username: authorizedData.username },
+          {
+            $push: {
+              posts: {
+                postBody: req.body.data,
+                datePosted: req.body.datePosted,
+              },
+            },
+          }
+        )
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            return err;
+          });
+      }
     }
-  });
+  );
 };
 
 exports.description = (req, res) => {
-  jwt.verify(req.token, "secret", (err, authorizedData) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-    } else {
-      res.status(200).json({
-        message: "Permission Granted.",
-        authorizedData,
-      });
-      Gamer.updateOne(
-        { _id: authorizedData.id },
-        {
-          $set: {
-            description: req.body.data,
-          },
-        }
-      )
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          return err;
+  jwt.verify(
+    req.token,
+    publicKey,
+    { algorithm: ["RS256"] },
+    (err, authorizedData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        res.status(200).json({
+          message: "Permission Granted.",
+          authorizedData,
         });
+        Gamer.updateOne(
+          { _id: authorizedData.id },
+          {
+            $set: {
+              description: req.body.data,
+            },
+          }
+        )
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            return err;
+          });
+      }
     }
-  });
+  );
 };
 
-// Retrieve and return all notes from the database.
 exports.findAll = (req, res) => {
   Gamer.find({}, (err, gamers) => {
     if (err) throw err;
@@ -115,55 +129,77 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a single note with a noteId
 exports.findOne = (req, res) => {
-  jwt.verify(req.token, "secret", (err, authorizedData) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-    } else {
-      // res.status(200).json({
-      //   message: "Permission Granted.",
-      //   authorizedData,
-      // });
-      Gamer.findById(authorizedData.id, (err, gamer) => {
-        if (err) throw err;
-        res.status(200).json({ gamer });
-      });
+  jwt.verify(
+    req.token,
+    publicKey,
+    { algorithm: ["RS256"] },
+    (err, authorizedData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        Gamer.findById(authorizedData.id, (err, gamer) => {
+          if (err) throw err;
+          res.status(200).json({ gamer });
+        });
+      }
     }
-  });
+  );
 };
 
 exports.uploadProfilePicture = (req, res) => {
-  jwt.verify(req.token, "secret", (err, authorizedData) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-    } else {
-      res.status(200).json({
-        message: "Permission Granted.",
-        authorizedData,
-      });
-      Gamer.updateOne(
-        { _id: authorizedData.id },
-        {
-          $set: {
-            profilePicture: req.body.profilePicture,
-          },
-        }
-      )
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          return err;
+  jwt.verify(
+    req.token,
+    publicKey,
+    { algorithm: ["RS256"] },
+    (err, authorizedData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        res.status(200).json({
+          message: "Permission Granted.",
+          authorizedData,
         });
+        Gamer.updateOne(
+          { _id: authorizedData.id },
+          {
+            $set: {
+              profilePicture: req.body.profilePicture,
+            },
+          }
+        )
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            return err;
+          });
+      }
     }
-  });
+  );
 };
 
 // Update a note identified by the noteId in the request
 exports.update = (req, res) => {};
 
 // Delete a note with the specified noteId in the request
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+  jwt.verify(
+    req.token,
+    publicKey,
+    { algorithm: ["RS256"] },
+    (err, authorizedData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        Gamer.findByIdAndDelete(authorizedData.id, (err, gamer) => {
+          if (err) throw err;
+          res.status(200).json({ gamer });
+        });
+      }
+    }
+  );
+};

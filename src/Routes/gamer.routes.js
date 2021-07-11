@@ -34,6 +34,6 @@ module.exports = (app) => {
 
   //    app.put('/gamers/:gamerId', gamers.update);
 
-  //    app.delete('/gamers/:gamerId', gamers.delete);
+  app.post("/gamers/delete", checkToken, gamers.delete);
   //
 };

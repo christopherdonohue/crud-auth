@@ -68,6 +68,26 @@ const GamerProfile = () => {
       });
   };
 
+  const handleDeleteAccount = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        `http://localhost:3001/gamers/delete`,
+        {},
+        {
+          headers: {
+            authorization: `token: ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
   useEffect(() => {
     if (image) {
       console.log(`image`);
@@ -112,6 +132,7 @@ const GamerProfile = () => {
             <Description>
               <p>{gamer.description}</p>
             </Description>
+            <span onClick={handleDeleteAccount}>DELETE ACCOUNT</span>
           </SingularGamer>
 
           {showImageUploadComponent && (
@@ -190,10 +211,12 @@ const ImageUploadForm = styled.form`
 
 const Description = styled.div`
   margin-top: 1em;
+  padding: 5px;
   border: 2px solid #23272a;
   border-radius: 4px;
   width: 80%;
   height: auto;
+  overflow-y: auto;
 `;
 
 const SingularGamer = styled.div`
@@ -207,7 +230,7 @@ const SingularGamer = styled.div`
   box-shadow: 6px 6px 4px 1px #23272a;
   color: gray;
   width: 400px;
-  height: 450px;
+  height: 650px;
   border-radius: 3px;
 
   h1,
@@ -222,7 +245,7 @@ const SingularGamer = styled.div`
   img {
     border-radius: 50%;
     width: 200px;
-    height: auto;
+    height: 200px;
     box-shadow: 6px 6px 4px 1px #23272a;
     cursor: pointer;
   }
