@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -10,13 +10,16 @@ import {
   StyleWrapper,
   SubmitButton,
 } from "./StyledComponents/formStyles";
+import { gamersContext } from "./Contexts/GamersContext";
+import { Toast } from "./StyledComponents/toastNotificationStyles";
 
 const Login = () => {
   const location = useLocation();
+  const { setToastNotification, toastNotification } = useContext(gamersContext);
 
-  const [toastNotification, setToastNotification] = useState(
-    location.state ? location.state.toast : {}
-  );
+  // const [toastNotification, setToastNotification] = useState(
+  //   location.state ? location.state.toast : {}
+  // );
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 
@@ -38,6 +41,12 @@ const Login = () => {
         console.log(`User ${formData.username} Successfully Authenticated!`);
         localStorage.setItem("token", res.data.token);
         setUserIsAuthenticated(true);
+        setToastNotification({
+          message: `Welcome, ${formData.username}!`,
+          color: `rgba(21, 104, 73)`,
+          background: `rgba(0,255,0,0.5)`,
+          type: `Success`,
+        });
         return res.data;
       })
       .catch((err) => {
@@ -51,23 +60,14 @@ const Login = () => {
       });
   };
 
-  useEffect(() => {
-    if (toastNotification.message) {
-      console.log(`timeout login`);
-      setTimeout(() => {
-        setToastNotification({});
-      }, 10000);
-    }
-  }, [toastNotification]);
-
   return (
     <>
-      {userIsAuthenticated ? (
-        <Redirect to="/" />
-      ) : (
-        <StyleWrapper>
-          <FormContainer>
-            {toastNotification.message && (
+      {userIsAuthenticated && <Redirect to="/" />}
+      <StyleWrapper>
+        <FormContainer>
+          {toastNotification.message &&
+            !toastNotification.message.includes(`Account Deleted`) &&
+            toastNotification.type !== `Registration-Error` && (
               <Toast
                 color={toastNotification.color}
                 background={toastNotification.background}
@@ -75,45 +75,30 @@ const Login = () => {
                 {<p>{toastNotification.message}</p>}
               </Toast>
             )}
-            <Form onSubmit={handleSubmit}>
-              <h3>Login</h3>
-              <div className="input-container">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  onChange={handleChange}
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={handleChange}
-                />
-                <SubmitButton marginTop={`8em`} type="submit">
-                  Submit
-                </SubmitButton>
-              </div>
-            </Form>
-          </FormContainer>
-        </StyleWrapper>
-      )}
+          <Form onSubmit={handleSubmit}>
+            <h3>Login</h3>
+            <div className="input-container">
+              <input
+                type="text"
+                placeholder="Username"
+                name="username"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={handleChange}
+              />
+              <SubmitButton marginTop={`8em`} type="submit">
+                Submit
+              </SubmitButton>
+            </div>
+          </Form>
+        </FormContainer>
+      </StyleWrapper>
     </>
   );
 };
 
 export default Login;
-
-const Toast = styled.div`
-  position: absolute;
-  width: 200px;
-  top: 0;
-  padding: 4px;
-  transform: translateY(-110%);
-  border: 2px solid ${({ color }) => `${color}`};
-  background: ${({ background }) => `${background}`};
-  color: ${({ color }) => `${color}`};
-  text-align: center;
-  font-weight: bold;
-  font-size: 13px;
-`;

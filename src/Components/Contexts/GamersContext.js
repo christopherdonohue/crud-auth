@@ -1,14 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Toast } from "../StyledComponents/toastNotificationStyles";
 
 export const gamersContext = React.createContext();
 export const GamersContext = (props) => {
   const [gamers, setGamers] = useState();
-  const [newUserRegistered, setNewUserRegistered] = useState(false);
+  const [updateListofGamers, setUpdateListofGamers] = useState(false);
+  const [toastNotification, setToastNotification] = useState({});
 
   useEffect(() => {
-    console.log(`getting gamers`);
     axios
       .get("http://localhost:3001/auth/findAll")
       .then((res) => {
@@ -19,16 +20,29 @@ export const GamersContext = (props) => {
         return err;
       });
 
-    return () => setNewUserRegistered(false);
-  }, [newUserRegistered]);
+    return () => setUpdateListofGamers(false);
+  }, [updateListofGamers]);
+
+  useEffect(() => {
+    if (
+      toastNotification.type &&
+      toastNotification.type !== `Registration-Error`
+    ) {
+      setTimeout(() => {
+        setToastNotification({});
+      }, 10000);
+    }
+  }, [toastNotification]);
 
   return (
     <gamersContext.Provider
       value={{
         gamers,
         setGamers,
-        newUserRegistered,
-        setNewUserRegistered,
+        updateListofGamers,
+        setUpdateListofGamers,
+        toastNotification,
+        setToastNotification,
       }}
     >
       {props.children}

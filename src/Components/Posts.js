@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 
 const Posts = () => {
-  const { gamers, setGamers, newUserRegistered, setNewUserRegistered } =
+  const { gamers, setGamers, updateListofGamers, setUpdateListofGamers } =
     useContext(gamersContext);
   const [posts, setPosts] = useState();
 
@@ -31,8 +31,8 @@ const Posts = () => {
       });
       setPosts(postsArray);
     }
-    return () => setNewUserRegistered(false);
-  }, [newUserRegistered, gamers]);
+    return () => setUpdateListofGamers(false);
+  }, [updateListofGamers, gamers]);
 
   return (
     <Container>

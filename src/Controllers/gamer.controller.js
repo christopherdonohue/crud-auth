@@ -181,25 +181,11 @@ exports.uploadProfilePicture = (req, res) => {
   );
 };
 
-// Update a note identified by the noteId in the request
 exports.update = (req, res) => {};
 
-// Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
-  jwt.verify(
-    req.token,
-    publicKey,
-    { algorithm: ["RS256"] },
-    (err, authorizedData) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(403);
-      } else {
-        Gamer.findByIdAndDelete(authorizedData.id, (err, gamer) => {
-          if (err) throw err;
-          res.status(200).json({ gamer });
-        });
-      }
-    }
-  );
+  Gamer.findByIdAndDelete(req.params.gamerId, (err, gamer) => {
+    if (err) throw err;
+    res.status(200).json({ gamer });
+  });
 };

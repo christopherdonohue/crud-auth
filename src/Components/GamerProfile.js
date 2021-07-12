@@ -1,14 +1,19 @@
 import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { Redirect, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { StyleWrapper } from "./StyledComponents/formStyles";
 import { gamersContext } from "./Contexts/GamersContext";
 
 const GamerProfile = () => {
-  const { newUserRegistered, setNewUserRegistered, gamers } =
-    useContext(gamersContext);
+  const {
+    updateListofGamers,
+    setUpdateListofGamers,
+    gamers,
+    setToastNotification,
+    toastNotification,
+  } = useContext(gamersContext);
   const location = useLocation();
   const [image, setImage] = useState();
   const [gamer, setGamer] = useState(
@@ -71,16 +76,15 @@ const GamerProfile = () => {
   const handleDeleteAccount = (e) => {
     e.preventDefault();
     axios
-      .post(
-        `http://localhost:3001/gamers/delete`,
-        {},
-        {
-          headers: {
-            authorization: `token: ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      .delete(`http://localhost:3001/gamers/${gamer._id}`)
       .then((res) => {
+        setUpdateListofGamers(true);
+        setToastNotification({
+          message: `Account Deleted!`,
+          color: `rgba(21, 104, 73)`,
+          background: `rgba(0,255,0,0.5)`,
+          type: `Success`,
+        });
         return res;
       })
       .catch((err) => {
@@ -105,7 +109,7 @@ const GamerProfile = () => {
         )
         .then((res) => {
           console.log(`response from image`);
-          setNewUserRegistered(true);
+          setUpdateListofGamers(true);
           return res;
         })
         .catch((err) => {
@@ -117,6 +121,10 @@ const GamerProfile = () => {
 
   return (
     <>
+      {toastNotification.message &&
+        toastNotification.message.includes(`Account Deleted`) && (
+          <Redirect to="/" />
+        )}
       {gamer && (
         <StyleWrapper1>
           <SingularGamer>

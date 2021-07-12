@@ -10,16 +10,21 @@ import {
   StyleWrapper,
   SubmitButton,
 } from "./StyledComponents/formStyles";
+import { Toast } from "./StyledComponents/toastNotificationStyles";
 import { gamersContext } from "./Contexts/GamersContext";
 
 const Register = () => {
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\[-`{-~]).{6,64}$/;
-  const { setNewUserRegistered, newUserRegistered } = useContext(gamersContext);
+  const {
+    setUpdateListofGamers,
+    updateListofGamers,
+    toastNotification,
+    setToastNotification,
+  } = useContext(gamersContext);
 
   //let allFieldsInFormFilled = useRef(false);
   const [allFieldsInFormFilled, setAllFieldsInFormFilled] = useState(false);
-  const [toastNotification, setToastNotification] = useState({});
   const [formData, setFormData] = useState({
     firstName: "",
     username: "",
@@ -50,7 +55,7 @@ const Register = () => {
           background: `rgba(0,255,0,0.5)`,
           type: `Success`,
         });
-        setNewUserRegistered(true);
+        setUpdateListofGamers(true);
         return res.data;
       })
       .catch((err) => {
@@ -62,20 +67,6 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value.trim() });
   };
-
-  useEffect(() => {
-    if (toastNotification.type === `Success`) {
-      history.push({
-        pathname: "/login",
-        state: { toast: toastNotification },
-      });
-
-      return () =>
-        setTimeout(() => {
-          setToastNotification({});
-        }, 10000);
-    }
-  }, [toastNotification]);
 
   useEffect(() => {
     if (
@@ -91,14 +82,14 @@ const Register = () => {
       if (!passwordPattern.test(formData.password)) {
         setToastNotification({
           message: `Password Must Contain 1 Uppercase, 1 Lowercase, and 1 Special Character.`,
-          type: `Error`,
+          type: `Registration-Error`,
           color: `rgba(80,0,0)`,
           background: `rgba(255,0,0,0.55)`,
         });
       } else if (formData.password !== formData.confirmPassword) {
         setToastNotification({
           message: `Passwords Don't Match`,
-          type: `Error`,
+          type: `Registration-Error`,
           color: `rgba(80,0,0)`,
           background: `rgba(255,0,0,0.55)`,
         });
@@ -112,84 +103,68 @@ const Register = () => {
 
   return (
     <>
-      {newUserRegistered ? (
-        <Redirect to="/login" />
-      ) : (
-        <StyleWrapper>
-          <FormContainer>
-            {toastNotification.message && (
-              <Toast
-                color={toastNotification.color}
-                background={toastNotification.background}
+      {updateListofGamers && <Redirect to="/login" />}
+      <StyleWrapper>
+        <FormContainer>
+          {toastNotification.type === `Registration-Error` && (
+            <Toast
+              color={toastNotification.color}
+              background={toastNotification.background}
+            >
+              {<p>{toastNotification.message}</p>}
+            </Toast>
+          )}
+          <Form onSubmit={handleSubmit}>
+            <h3>Register</h3>
+            <div className="input-container">
+              <input
+                type="text"
+                placeholder="First Name"
+                name="firstName"
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                placeholder="Username"
+                name="username"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                onChange={handleChange}
+              />
+              <SubmitButton
+                type="submit"
+                pointerEvents={
+                  (!allFieldsInFormFilled ||
+                    (toastNotification.type &&
+                      toastNotification.type === `Registration-Error`)) &&
+                  `none`
+                }
+                opacity={
+                  (!allFieldsInFormFilled ||
+                    (toastNotification.type &&
+                      toastNotification.type === `Registration-Error`)) &&
+                  `0.5`
+                }
+                marginTop={`3em`}
               >
-                {<p>{toastNotification.message}</p>}
-              </Toast>
-            )}
-            <Form onSubmit={handleSubmit}>
-              <h3>Register</h3>
-              <div className="input-container">
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  name="firstName"
-                  onChange={handleChange}
-                />
-                <input
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  onChange={handleChange}
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={handleChange}
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  onChange={handleChange}
-                />
-                <SubmitButton
-                  type="submit"
-                  pointerEvents={
-                    (!allFieldsInFormFilled ||
-                      (toastNotification.type &&
-                        toastNotification.type === `Error`)) &&
-                    `none`
-                  }
-                  opacity={
-                    (!allFieldsInFormFilled ||
-                      (toastNotification.type &&
-                        toastNotification.type === `Error`)) &&
-                    `0.5`
-                  }
-                  marginTop={`3em`}
-                >
-                  Submit
-                </SubmitButton>
-              </div>
-            </Form>
-          </FormContainer>
-        </StyleWrapper>
-      )}
+                Submit
+              </SubmitButton>
+            </div>
+          </Form>
+        </FormContainer>
+      </StyleWrapper>
     </>
   );
 };
 
 export default Register;
-
-const Toast = styled.div`
-  position: absolute;
-  width: 200px;
-  top: 0;
-  transform: translateY(-110%);
-  border: 2px solid ${({ color }) => `${color}`};
-  background: ${({ background }) => `${background}`};
-  color: ${({ color }) => `${color}`};
-  text-align: center;
-  font-weight: bold;
-  font-size: 13px;
-`;

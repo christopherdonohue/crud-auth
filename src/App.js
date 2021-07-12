@@ -4,10 +4,12 @@ import Boys from "./Components/Boys";
 import styled from "styled-components";
 import axios from "axios";
 import { gamersContext } from "./Components/Contexts/GamersContext";
+import { Toast } from "./Components/StyledComponents/toastNotificationStyles";
 require("dotenv").config();
 
 function App() {
-  const { setNewUserRegistered } = useContext(gamersContext);
+  const { setUpdateListofGamers, toastNotification, setToastNotification } =
+    useContext(gamersContext);
   const [textArea, setTextArea] = useState("");
   const [userAuthorized, setUserAuthorized] = useState(true);
 
@@ -24,7 +26,7 @@ function App() {
         }
       )
       .then((res) => {
-        setNewUserRegistered(true);
+        setUpdateListofGamers(true);
         console.log(res.status);
         return res;
       })
@@ -39,7 +41,6 @@ function App() {
   return (
     <>
       {!userAuthorized && <Redirect to="/login" />}
-
       <StyleWrapper>
         <Title>
           <img
@@ -50,6 +51,17 @@ function App() {
           <span>SOCIAL MEDIA ON THE WORLD WIDE WEB</span>
         </Title>
         <Container className="gamerImage">
+          {toastNotification.message &&
+            (toastNotification.message.includes(`Account Deleted`) ||
+              toastNotification.message.includes(`Welcome,`)) && (
+              <Toast
+                color={toastNotification.color}
+                background={toastNotification.background}
+                translate={`-83`}
+              >
+                {<p>{toastNotification.message}</p>}
+              </Toast>
+            )}
           <Boys />
         </Container>
         {userAuthorized && (
@@ -92,6 +104,7 @@ const Title = styled.h1`
 `;
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-around;
   align-items: baseline;
