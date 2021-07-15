@@ -55,12 +55,18 @@ const Posts = () => {
 export default Posts;
 
 const Card = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
   margin: 1em;
-  padding: 10px;
+  padding: 7px;
   background: #2c2f33;
-  min-width: 100px;
-  max-width: 300px;
-  min-height: 150px;
+  width: 8em;
+  min-width: 300px;
+  height: 9em;
+  min-height: 250px;
   text-align: center;
   color: #99aab5;
   box-shadow: 5px 5px 4px 1px #23272a;
@@ -68,12 +74,17 @@ const Card = styled.div`
   word-wrap: break-word;
   overflow-y: auto;
   white-space: pre-wrap;
+
+  h5 {
+    position: absolute;
+    bottom: 0;
+  }
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-flow: row wrap;
   min-width: 95vw;
   min-height: 95vh;

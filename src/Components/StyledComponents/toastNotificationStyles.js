@@ -14,4 +14,5 @@ export const Toast = styled.div`
   text-align: center;
   font-weight: bold;
   font-size: 13px;
+  padding: 4px;
 `;

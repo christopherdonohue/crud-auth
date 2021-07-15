@@ -72,11 +72,22 @@ const Boys = () => {
             <>
               <BoyStyle>
                 <Profile>
-                  <h2>{item.username}</h2>
-                  <img src={item.profilePicture} alt={"Profile Picture"} />
-                  <div>
-                    <p>{item.description}</p>
+                  {item.username.length <= 20 ? (
+                    <h2>{item.username}</h2>
+                  ) : (
+                    <h4>{item.username}</h4>
+                  )}
+                  <div className="image-container">
+                    <img src={item.profilePicture} alt={"Profile Picture"} />
                   </div>
+                  {item.description && (
+                    <div className="description">
+                      <p>{item.description}</p>
+                    </div>
+                  )}
+
+                  <p className="total-posts">{`Total Posts: ${item.posts.length}`}</p>
+
                   {loggedInGamer && loggedInGamer._id === item._id && (
                     <span onClick={editProfileFn}>Edit Profile</span>
                   )}
@@ -96,13 +107,31 @@ const BoyStyle = styled.div`
   margin: 1em;
   max-width: 300px;
 
-  img {
+  .image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
     border-radius: 50%;
-    cursor: pointer;
-    width: 120px;
-    /* min-width: 100px; */
-    height: 120px;
-    /* min-height: 100px; */
+  }
+
+  img {
+    position: absolute;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  img.landscape {
+    height: 100%;
+    width: auto;
+  }
+
+  .total-posts {
+    position: absolute;
+    bottom: 1.5em;
   }
 
   span {
@@ -122,22 +151,30 @@ const Profile = styled.div`
   color: gray;
   background-color: #2c2f33;
   border-radius: 3px;
-  min-width: 200px;
-  max-width: 300px;
+  width: 15vw;
+  min-width: 250px;
   height: 55vh;
+  min-height: 470px;
   box-shadow: 3px 5px 4px 1px #23272a;
   overflow-y: auto;
 
-  h2 {
+  h2,
+  h4 {
     color: #99aab5;
   }
 
-  div {
-    margin-top: 3em;
+  .description {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+
     padding: 3px;
     text-align: center;
     color: #99aab5;
-    width: 75%;
+    width: 80%;
+    max-height: 150px;
+    overflow-y: auto;
     border: 2px solid #23272a;
     border-radius: 3px;
   }

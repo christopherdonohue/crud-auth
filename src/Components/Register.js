@@ -12,6 +12,7 @@ import {
 } from "./StyledComponents/formStyles";
 import { Toast } from "./StyledComponents/toastNotificationStyles";
 import { gamersContext } from "./Contexts/GamersContext";
+import { fromPairs } from "lodash";
 
 const Register = () => {
   const passwordPattern =
@@ -46,6 +47,8 @@ const Register = () => {
         firstName: formData.firstName,
         username: formData.username,
         password: formData.password,
+        profilePicture:
+          "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
       })
       .then((res) => {
         console.log(`Successfully registered ${formData.username}!`);
@@ -96,6 +99,14 @@ const Register = () => {
       } else {
         setToastNotification({});
       }
+    }
+    if (formData.username.length > 30) {
+      setToastNotification({
+        message: `Username Cannot Exceed 30 Characters`,
+        type: `Registration-Error`,
+        color: `rgba(80,0,0)`,
+        background: `rgba(255,0,0,0.55)`,
+      });
     }
 
     return () => setAllFieldsInFormFilled(false);

@@ -57,7 +57,7 @@ function App() {
               <Toast
                 color={toastNotification.color}
                 background={toastNotification.background}
-                translate={`-83`}
+                translate={`-75`}
               >
                 {<p>{toastNotification.message}</p>}
               </Toast>
@@ -106,8 +106,8 @@ const Title = styled.h1`
 const Container = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-around;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   padding: 10px;
 `;
