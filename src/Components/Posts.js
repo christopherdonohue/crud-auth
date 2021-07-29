@@ -1,9 +1,9 @@
-import React from "react";
-import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { gamersContext } from "./Contexts/GamersContext";
-import styled from "styled-components";
-import { ThemeProvider } from "styled-components";
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { gamersContext } from './Contexts/GamersContext';
+import styled from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 const Posts = () => {
   const { gamers, setGamers, updateListofGamers, setUpdateListofGamers } =
@@ -69,7 +69,7 @@ const Card = styled.div`
   min-height: 250px;
   text-align: center;
   color: #99aab5;
-  box-shadow: 5px 5px 4px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
   border-radius: 3px;
   word-wrap: break-word;
   overflow-y: auto;

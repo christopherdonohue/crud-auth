@@ -1,10 +1,10 @@
-import React, { useEffect, useContext } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import { Redirect, useLocation, useParams } from "react-router-dom";
-import { useState } from "react";
-import { StyleWrapper } from "./StyledComponents/formStyles";
-import { gamersContext } from "./Contexts/GamersContext";
+import React, { useEffect, useContext } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import { Redirect, useLocation, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { StyleWrapper } from './StyledComponents/formStyles';
+import { gamersContext } from './Contexts/GamersContext';
 
 const GamerProfile = () => {
   const {
@@ -19,7 +19,7 @@ const GamerProfile = () => {
   const [gamer, setGamer] = useState(
     location.state ? location.state.gamer : {}
   );
-  const [textArea, setTextArea] = useState("");
+  const [textArea, setTextArea] = useState('');
 
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
@@ -30,8 +30,8 @@ const GamerProfile = () => {
   const handleImageChange = (e) => {
     files = e.target.files;
     data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "cookoutlogs");
+    data.append('file', files[0]);
+    data.append('upload_preset', 'cookoutlogs');
   };
 
   const submitImage = (e) => {
@@ -53,11 +53,11 @@ const GamerProfile = () => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3001/auth/description",
+        'http://localhost:3001/auth/description',
         { data: textArea, datePosted: Date.now() },
         {
           headers: {
-            authorization: `token: ${localStorage.getItem("token")}`,
+            authorization: `token: ${localStorage.getItem('token')}`,
           },
         }
       )
@@ -97,13 +97,13 @@ const GamerProfile = () => {
       console.log(`image`);
       axios
         .post(
-          "http://localhost:3001/gamers/uploadProfilePicture",
+          'http://localhost:3001/gamers/uploadProfilePicture',
           {
             profilePicture: gamer.profilePicture,
           },
           {
             headers: {
-              authorization: `token: ${localStorage.getItem("token")}`,
+              authorization: `token: ${localStorage.getItem('token')}`,
             },
           }
         )
@@ -123,7 +123,7 @@ const GamerProfile = () => {
     <>
       {toastNotification.message &&
         toastNotification.message.includes(`Account Deleted`) && (
-          <Redirect to="/" />
+          <Redirect to='/' />
         )}
       {gamer && (
         <StyleWrapper1>
@@ -135,7 +135,7 @@ const GamerProfile = () => {
                 setShowImageUploadComponent(!showImageUploadComponent)
               }
               src={gamer.profilePicture}
-              alt="Profile Picture"
+              alt='Profile Picture'
             />
             <Description>
               <p>{gamer.description}</p>
@@ -147,21 +147,21 @@ const GamerProfile = () => {
             <ImageUploadForm onSubmit={submitImage}>
               <h4>Change Profile Picture</h4>
               <input
-                type="file"
-                name="imageFile"
+                type='file'
+                name='imageFile'
                 onChange={handleImageChange}
               />
               <div>
-                <input className="upload-button" type="submit" value="Upload" />
+                <input className='upload-button' type='submit' value='Upload' />
               </div>
             </ImageUploadForm>
           )}
           <Form onSubmit={submitText}>
             <textarea
-              name="textArea"
+              name='textArea'
               onChange={(e) => setTextArea(e.target.value)}
             ></textarea>
-            <input type="submit" value="Submit" />
+            <input type='submit' value='Submit' />
           </Form>
         </StyleWrapper1>
       )}
@@ -192,7 +192,7 @@ const ImageUploadForm = styled.form`
   width: 416px;
   border-radius: 3px;
   background: #2c2f33;
-  box-shadow: 6px 6px 4px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
 
   h4 {
     color: #99aab5;
@@ -235,7 +235,7 @@ const SingularGamer = styled.div`
   text-align: center;
   padding: 1em;
   background-color: #2c2f33;
-  box-shadow: 6px 6px 4px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
   color: gray;
   width: 400px;
   height: 650px;
@@ -254,7 +254,7 @@ const SingularGamer = styled.div`
     border-radius: 50%;
     width: 200px;
     height: 200px;
-    box-shadow: 6px 6px 4px 1px #23272a;
+    box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
     cursor: pointer;
   }
 `;
@@ -269,7 +269,7 @@ const FormContainer = styled.form`
   height: 100px;
   margin: 1em auto;
   padding: 0.5em;
-  box-shadow: 3px 3px 2px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
 
   textarea {
     width: 190px;
@@ -295,7 +295,7 @@ const Form = styled.form`
   padding: 0.5em;
   background: #2c2f33;
   border-radius: 3px;
-  box-shadow: 3px 3px 2px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
 
   textarea {
     width: 90%;

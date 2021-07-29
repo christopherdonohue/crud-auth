@@ -1,9 +1,9 @@
-const Gamer = require("../Models/gamer.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const Gamer = require('../Models/gamer.model');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { privateKey } = JSON.parse(process.env.JWT_PRIVATE_KEY);
 const { publicKey } = JSON.parse(process.env.JWT_PUBLIC_KEY);
-require("dotenv").config();
+require('dotenv').config();
 
 exports.register = (req, res) => {
   const newGamer = new Gamer(req.body);
@@ -21,6 +21,7 @@ exports.register = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  console.log(privateKey);
   Gamer.findOne(
     {
       username: req.body.username,
@@ -32,7 +33,7 @@ exports.login = (req, res) => {
         !bcrypt.compareSync(req.body.password, gamer.hashPassword)
       ) {
         return res.status(401).json({
-          message: "Authentication Failed. Invalid User or Password!",
+          message: 'Authentication Failed. Invalid User or Password!',
         });
       }
       return res.status(200).json({
@@ -43,7 +44,7 @@ exports.login = (req, res) => {
             firstName: gamer.firstName,
           },
           privateKey,
-          { expiresIn: "1 hour", algorithm: "RS256" }
+          { expiresIn: '1 hour', algorithm: 'RS256' }
         ),
       });
     }
@@ -54,14 +55,14 @@ exports.create = (req, res) => {
   jwt.verify(
     req.token,
     publicKey,
-    { algorithm: ["RS256"] },
+    { algorithm: ['RS256'] },
     (err, authorizedData) => {
       if (err) {
         console.log(err);
         res.sendStatus(403);
       } else {
         res.status(200).json({
-          message: "Permission Granted.",
+          message: 'Permission Granted.',
           authorizedData,
         });
         Gamer.updateOne(
@@ -90,14 +91,14 @@ exports.description = (req, res) => {
   jwt.verify(
     req.token,
     publicKey,
-    { algorithm: ["RS256"] },
+    { algorithm: ['RS256'] },
     (err, authorizedData) => {
       if (err) {
         console.log(err);
         res.sendStatus(403);
       } else {
         res.status(200).json({
-          message: "Permission Granted.",
+          message: 'Permission Granted.',
           authorizedData,
         });
         Gamer.updateOne(
@@ -133,7 +134,7 @@ exports.findOne = (req, res) => {
   jwt.verify(
     req.token,
     publicKey,
-    { algorithm: ["RS256"] },
+    { algorithm: ['RS256'] },
     (err, authorizedData) => {
       if (err) {
         console.log(err);
@@ -152,14 +153,14 @@ exports.uploadProfilePicture = (req, res) => {
   jwt.verify(
     req.token,
     publicKey,
-    { algorithm: ["RS256"] },
+    { algorithm: ['RS256'] },
     (err, authorizedData) => {
       if (err) {
         console.log(err);
         res.sendStatus(403);
       } else {
         res.status(200).json({
-          message: "Permission Granted.",
+          message: 'Permission Granted.',
           authorizedData,
         });
         Gamer.updateOne(

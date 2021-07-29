@@ -1,9 +1,9 @@
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import { Redirect, useHistory } from "react-router";
-import styled from "styled-components";
-import { gamersContext } from "./Contexts/GamersContext";
-import GamerProfile from "./GamerProfile";
+import axios from 'axios';
+import { useState, useEffect, useContext } from 'react';
+import { Redirect, useHistory } from 'react-router';
+import styled from 'styled-components';
+import { gamersContext } from './Contexts/GamersContext';
+import GamerProfile from './GamerProfile';
 
 const Boys = () => {
   const { gamers, setGamers } = useContext(gamersContext);
@@ -19,7 +19,7 @@ const Boys = () => {
         {},
         {
           headers: {
-            authorization: `token: ${localStorage.getItem("token")}`,
+            authorization: `token: ${localStorage.getItem('token')}`,
           },
         }
       )
@@ -50,7 +50,7 @@ const Boys = () => {
         {},
         {
           headers: {
-            authorization: `token: ${localStorage.getItem("token")}`,
+            authorization: `token: ${localStorage.getItem('token')}`,
           },
         }
       )
@@ -77,16 +77,16 @@ const Boys = () => {
                   ) : (
                     <h4>{item.username}</h4>
                   )}
-                  <div className="image-container">
-                    <img src={item.profilePicture} alt={"Profile Picture"} />
+                  <div className='image-container'>
+                    <img src={item.profilePicture} alt={'Profile Picture'} />
                   </div>
                   {item.description && (
-                    <div className="description">
+                    <div className='description'>
                       <p>{item.description}</p>
                     </div>
                   )}
 
-                  <p className="total-posts">{`Total Posts: ${item.posts.length}`}</p>
+                  <p className='total-posts'>{`Total Posts: ${item.posts.length}`}</p>
 
                   {loggedInGamer && loggedInGamer._id === item._id && (
                     <span onClick={editProfileFn}>Edit Profile</span>
@@ -155,7 +155,7 @@ const Profile = styled.div`
   min-width: 250px;
   height: 55vh;
   min-height: 470px;
-  box-shadow: 3px 5px 4px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
   overflow-y: auto;
 
   h2,

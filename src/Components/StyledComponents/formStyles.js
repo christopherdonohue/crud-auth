@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 export const Form = styled.form`
   color: #99aab5;
@@ -98,7 +98,7 @@ export const FormContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   background: #2c2f33;
-  box-shadow: 3px 3px 2px 1px #23272a;
+  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
   text-align: center;
   width: 350px;
   height: 400px;
