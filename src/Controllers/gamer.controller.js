@@ -21,7 +21,6 @@ exports.register = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  console.log(privateKey);
   Gamer.findOne(
     {
       username: req.body.username,
@@ -182,11 +181,20 @@ exports.uploadProfilePicture = (req, res) => {
   );
 };
 
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  Gamer.findByIdAndUpdate(
+    req.params.gamerId,
+    { firstName: req.body.firstName },
+    (err, gamer) => {
+      if (err) throw err;
+      res.status(200).json({ msg: 'Update Successful', gamer });
+    }
+  );
+};
 
 exports.delete = (req, res) => {
   Gamer.findByIdAndDelete(req.params.gamerId, (err, gamer) => {
     if (err) throw err;
-    res.status(200).json({ gamer });
+    res.status(200).json({ msg: 'Profile Deleted' });
   });
 };

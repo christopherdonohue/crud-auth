@@ -1,8 +1,8 @@
 module.exports = (app) => {
   const checkToken = (req, res, next) => {
-    const header = req.headers["authorization"];
-    if (typeof header !== "undefined") {
-      const bearer = header.split(" ");
+    const header = req.headers['authorization'];
+    if (typeof header !== 'undefined') {
+      const bearer = header.split(' ');
       const token = bearer[1];
       req.token = token;
       next();
@@ -12,28 +12,28 @@ module.exports = (app) => {
     }
   };
 
-  const gamers = require("../Controllers/gamer.controller.js");
+  const gamers = require('../Controllers/gamer.controller.js');
 
-  app.post("/auth/register", gamers.register);
+  app.post('/auth/register', gamers.register);
 
-  app.post("/auth/login", gamers.login);
+  app.post('/auth/login', gamers.login);
 
-  app.post("/auth/create", checkToken, gamers.create);
+  app.post('/auth/create', checkToken, gamers.create);
 
-  app.post("/auth/description", checkToken, gamers.description);
+  app.post('/auth/description', checkToken, gamers.description);
 
-  app.get("/auth/findAll", gamers.findAll);
+  app.get('/auth/findAll', gamers.findAll);
 
-  app.post("/gamers/findOne", checkToken, gamers.findOne);
+  app.post('/gamers/findOne', checkToken, gamers.findOne);
 
   app.post(
-    "/gamers/uploadProfilePicture",
+    '/gamers/uploadProfilePicture',
     checkToken,
     gamers.uploadProfilePicture
   );
 
-  //    app.put('/gamers/:gamerId', gamers.update);
+  app.put('/gamers/:gamerId', gamers.update);
 
-  app.delete("/gamers/:gamerId", gamers.delete);
+  app.delete('/gamers/:gamerId', gamers.delete);
   //
 };

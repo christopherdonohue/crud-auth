@@ -20,6 +20,8 @@ const GamerProfile = () => {
     location.state ? location.state.gamer : {}
   );
   const [textArea, setTextArea] = useState('');
+  const [showEditName, setShowEditName] = useState(false);
+  const [editNameValue, setEditNameValue] = useState();
 
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
@@ -92,6 +94,22 @@ const GamerProfile = () => {
       });
   };
 
+  const handleEditName = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:3001/gamers/${gamer._id}`, {
+        firstName: editNameValue,
+      })
+      .then((res) => {
+        setUpdateListofGamers(true);
+        console.log(res);
+        setGamer({ ...gamer, firstName: res.data.gamer.firstName });
+        setShowEditName(false);
+        return res;
+      })
+      .catch((err) => err);
+  };
+
   useEffect(() => {
     if (image) {
       console.log(`image`);
@@ -128,7 +146,22 @@ const GamerProfile = () => {
       {gamer && (
         <StyleWrapper1>
           <SingularGamer>
-            <h1>{gamer.firstName}</h1>
+            <div>
+              <h1>{gamer.firstName}</h1>
+              <p onClick={() => setShowEditName(!showEditName)}>edit</p>
+
+              {showEditName && (
+                <>
+                  <input
+                    type='text'
+                    name='editName'
+                    placeholder='Enter New Name...'
+                    onChange={(e) => setEditNameValue(e.target.value)}
+                  />
+                  <button onClick={handleEditName}>Submit</button>
+                </>
+              )}
+            </div>
             <h2>{gamer.username}</h2>
             <img
               onClick={() =>
