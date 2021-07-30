@@ -187,7 +187,9 @@ exports.update = (req, res) => {
     { firstName: req.body.firstName },
     (err, gamer) => {
       if (err) throw err;
-      res.status(200).json({ msg: 'Update Successful', gamer });
+      res
+        .status(200)
+        .json({ msg: 'Update Successful', gamer: gamer.firstName });
     }
   );
 };

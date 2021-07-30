@@ -101,9 +101,9 @@ const GamerProfile = () => {
         firstName: editNameValue,
       })
       .then((res) => {
-        setUpdateListofGamers(true);
         console.log(res);
-        setGamer({ ...gamer, firstName: res.data.gamer.firstName });
+        setGamer({ ...gamer, firstName: editNameValue });
+        // setUpdateListofGamers(true);
         setShowEditName(false);
         return res;
       })

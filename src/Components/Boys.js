@@ -80,17 +80,21 @@ const Boys = () => {
                   <div className='image-container'>
                     <img src={item.profilePicture} alt={'Profile Picture'} />
                   </div>
-                  {item.description && (
-                    <div className='description'>
-                      <p>{item.description}</p>
-                    </div>
-                  )}
-
-                  <p className='total-posts'>{`Total Posts: ${item.posts.length}`}</p>
-
-                  {loggedInGamer && loggedInGamer._id === item._id && (
-                    <span onClick={editProfileFn}>Edit Profile</span>
-                  )}
+                  <EditProfileAndDescriptionContainer>
+                    {loggedInGamer && loggedInGamer._id === item._id && (
+                      <div className='span'>
+                        <span onClick={editProfileFn}>Edit Profile</span>
+                      </div>
+                    )}
+                    {item.description && (
+                      <div className='description'>
+                        <p>{item.description}</p>
+                      </div>
+                    )}
+                  </EditProfileAndDescriptionContainer>
+                  <ProfileBottom>
+                    <p>{`Total Posts: ${item.posts.length}`}</p>
+                  </ProfileBottom>
                 </Profile>
               </BoyStyle>
             </>
@@ -113,6 +117,7 @@ const BoyStyle = styled.div`
     height: 150px;
     overflow: hidden;
     border-radius: 50%;
+    box-shadow: 3px 3px 3px 1px rgba(18, 0, 12, 0.4);
   }
 
   img {
@@ -133,13 +138,6 @@ const BoyStyle = styled.div`
     position: absolute;
     bottom: 1.5em;
   }
-
-  span {
-    cursor: pointer;
-    bottom: 1em;
-    position: absolute;
-    color: #ef99f7;
-  }
 `;
 
 const Profile = styled.div`
@@ -155,7 +153,7 @@ const Profile = styled.div`
   min-width: 250px;
   height: 55vh;
   min-height: 470px;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: 3px 3px 4px 1px rgba(18, 0, 12, 0.6);
   overflow-y: auto;
 
   h2,
@@ -164,18 +162,40 @@ const Profile = styled.div`
   }
 
   .description {
-    position: absolute;
-    top: 50%;
+    /* top: 50%;
     left: 50%;
-    transform: translate(-50%, -10%);
+    transform: translate(-50%, 0%); */
 
-    padding: 3px;
     text-align: center;
     color: #99aab5;
-    width: 80%;
+    width: 92%;
     max-height: 150px;
     overflow-y: auto;
-    border: 2px solid #23272a;
-    border-radius: 3px;
+  }
+`;
+
+const ProfileBottom = styled.div`
+  width: 100%;
+  background-color: #393c44;
+  text-align: center;
+  bottom: 0;
+  position: absolute;
+`;
+
+const EditProfileAndDescriptionContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  gap: 1em;
+
+  padding: 0.5em;
+  width: 90%;
+  height: 35%;
+
+  span {
+    color: #ef99f7;
+    cursor: pointer;
   }
 `;
