@@ -146,34 +146,41 @@ const GamerProfile = () => {
       {gamer && (
         <StyleWrapper1>
           <SingularGamer>
-            <div>
-              <h1>{gamer.firstName}</h1>
-              <p onClick={() => setShowEditName(!showEditName)}>edit</p>
-
-              {showEditName && (
-                <>
-                  <input
-                    type='text'
-                    name='editName'
-                    placeholder='Enter New Name...'
-                    onChange={(e) => setEditNameValue(e.target.value)}
-                  />
-                  <button onClick={handleEditName}>Submit</button>
-                </>
-              )}
-            </div>
-            <h2>{gamer.username}</h2>
-            <img
-              onClick={() =>
-                setShowImageUploadComponent(!showImageUploadComponent)
-              }
-              src={gamer.profilePicture}
-              alt='Profile Picture'
-            />
+            <FirstBlock>
+              <InnerBlock>
+                <img
+                  onClick={() =>
+                    setShowImageUploadComponent(!showImageUploadComponent)
+                  }
+                  src={gamer.profilePicture}
+                  alt='Profile Picture'
+                />
+                <ChildContainer>
+                  <h1>{gamer.firstName}</h1>
+                  {showEditName && (
+                    <>
+                      <input
+                        type='text'
+                        name='editName'
+                        placeholder='Enter New Name...'
+                        onChange={(e) => setEditNameValue(e.target.value)}
+                      />
+                      <button onClick={handleEditName}>Submit</button>
+                    </>
+                  )}
+                  <h2>{gamer.username}</h2>
+                  <span onClick={() => setShowEditName(!showEditName)}>
+                    edit
+                  </span>
+                </ChildContainer>
+              </InnerBlock>
+            </FirstBlock>
             <Description>
               <p>{gamer.description}</p>
             </Description>
-            <span onClick={handleDeleteAccount}>DELETE ACCOUNT</span>
+            <DeleteDiv>
+              <span onClick={handleDeleteAccount}>DELETE ACCOUNT</span>
+            </DeleteDiv>
           </SingularGamer>
 
           {showImageUploadComponent && (
@@ -251,22 +258,21 @@ const ImageUploadForm = styled.form`
 `;
 
 const Description = styled.div`
-  margin-top: 1em;
-  padding: 5px;
-  border: 2px solid #23272a;
-  border-radius: 4px;
-  width: 80%;
+  width: 100%;
   height: auto;
   overflow-y: auto;
+  /* background-color: #394244; */
+  padding: 1em 0 1em 0;
 `;
 
 const SingularGamer = styled.div`
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  padding: 1em;
+  /* padding: 1em; */
   background-color: #2c2f33;
   box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
   color: gray;
@@ -362,5 +368,52 @@ const Form = styled.form`
       background: ${({ theme }) => theme.main};
       color: white;
     }
+  }
+`;
+
+const FirstBlock = styled.div`
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  background-color: #393c44;
+`;
+
+const ChildContainer = styled.div`
+  position: absolute;
+  width: 45%;
+  height: 100%;
+
+  right: 0.5em;
+  span {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    position: absolute;
+    cursor: pointer;
+  }
+`;
+
+const InnerBlock = styled.div`
+  position: relative;
+  width: 98%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem;
+`;
+
+const DeleteDiv = styled.div`
+  width: 100%;
+  background: rgba(255, 0, 0, 0.3);
+  position: absolute;
+  bottom: 0;
+  padding: 0.5em 0 0.5em 0;
+  border-radius: 0 0 3px 3px;
+  font-weight: bold;
+  transition: background 200ms, color 200ms;
+
+  :hover {
+    background: rgba(255, 0, 0, 1);
+    color: white;
+    cursor: pointer;
   }
 `;
