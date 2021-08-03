@@ -21,7 +21,7 @@ const GamerProfile = () => {
   );
   const [textArea, setTextArea] = useState('');
   const [showEditName, setShowEditName] = useState(false);
-  const [editNameValue, setEditNameValue] = useState();
+  const [editFirstNameAndUsername, setEditFirstNameAndUsername] = useState();
 
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
@@ -98,12 +98,17 @@ const GamerProfile = () => {
     e.preventDefault();
     axios
       .put(`http://localhost:3001/gamers/${gamer._id}`, {
-        firstName: editNameValue,
+        firstName: editFirstNameAndUsername.firstName,
+        username: editFirstNameAndUsername.username,
       })
       .then((res) => {
         console.log(res);
-        setGamer({ ...gamer, firstName: editNameValue });
-        // setUpdateListofGamers(true);
+        setGamer({
+          ...gamer,
+          firstName: editFirstNameAndUsername.firstName,
+          username: editFirstNameAndUsername.username,
+        });
+        setUpdateListofGamers(true);
         setShowEditName(false);
         return res;
       })
@@ -156,19 +161,45 @@ const GamerProfile = () => {
                   alt='Profile Picture'
                 />
                 <ChildContainer>
-                  <h1>{gamer.firstName}</h1>
-                  {showEditName && (
-                    <>
-                      <input
-                        type='text'
-                        name='editName'
-                        placeholder='Enter New Name...'
-                        onChange={(e) => setEditNameValue(e.target.value)}
-                      />
+                  {showEditName ? (
+                    <InputContainer>
+                      <div>
+                        <label for='editName'>First Name</label>
+                        <input
+                          type='text'
+                          name='editName'
+                          placeholder='Enter New Name...'
+                          onChange={(e) =>
+                            setEditFirstNameAndUsername({
+                              ...editFirstNameAndUsername,
+                              firstName: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label for='editUserName'>Username</label>
+                        <input
+                          type='text'
+                          name='editUserName'
+                          placeholder='Enter New Name...'
+                          onChange={(e) =>
+                            setEditFirstNameAndUsername({
+                              ...editFirstNameAndUsername,
+                              username: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
                       <button onClick={handleEditName}>Submit</button>
+                    </InputContainer>
+                  ) : (
+                    <>
+                      <h1>{gamer.firstName}</h1>
+                      <h2>{gamer.username}</h2>
                     </>
                   )}
-                  <h2>{gamer.username}</h2>
+
                   <span onClick={() => setShowEditName(!showEditName)}>
                     edit
                   </span>
@@ -415,5 +446,46 @@ const DeleteDiv = styled.div`
     background: rgba(255, 0, 0, 1);
     color: white;
     cursor: pointer;
+  }
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-flow: column nowrap;
+
+  position: absolute;
+  width: 95%;
+
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 0.5em;
+  label {
+    display: flex;
+    align-self: flex-start;
+    font-size: 0.85rem;
+  }
+
+  input {
+    background-color: #99aab5;
+    border: 2px solid #99aab5;
+    border-radius: 2px;
+  }
+
+  button {
+    border: 2px solid #99aab5;
+    background: none;
+    color: #99aab5;
+    font-weight: bold;
+    border-radius: 2px;
+    transition: background 200ms, color 200ms;
+    margin-top: 1em;
+
+    :hover {
+      background-color: #99aab5;
+      color: white;
+      cursor: pointer;
+    }
   }
 `;

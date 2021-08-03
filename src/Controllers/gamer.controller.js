@@ -184,7 +184,7 @@ exports.uploadProfilePicture = (req, res) => {
 exports.update = (req, res) => {
   Gamer.findByIdAndUpdate(
     req.params.gamerId,
-    { firstName: req.body.firstName },
+    { firstName: req.body.firstName, username: req.body.username },
     (err, gamer) => {
       if (err) throw err;
       res
