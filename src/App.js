@@ -122,7 +122,8 @@ const Form = styled.form`
   padding: 0.5em;
   background: #2c2f33;
   border-radius: 3px;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
 
   textarea {
     width: 90%;

@@ -117,7 +117,7 @@ const BoyStyle = styled.div`
     height: 150px;
     overflow: hidden;
     border-radius: 50%;
-    box-shadow: 3px 3px 3px 1px rgba(18, 0, 12, 0.4);
+    box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);
   }
 
   img {
@@ -153,7 +153,8 @@ const Profile = styled.div`
   min-width: 250px;
   height: 55vh;
   min-height: 470px;
-  box-shadow: 3px 3px 4px 1px rgba(18, 0, 12, 0.6);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
   overflow-y: auto;
 
   h2,

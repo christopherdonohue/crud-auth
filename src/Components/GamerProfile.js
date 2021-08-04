@@ -191,7 +191,7 @@ const GamerProfile = () => {
                           }
                         />
                       </div>
-                      <button onClick={handleEditName}>Submit</button>
+                      <button onClick={handleEditName}>Save</button>
                     </InputContainer>
                   ) : (
                     <>
@@ -263,7 +263,8 @@ const ImageUploadForm = styled.form`
   width: 416px;
   border-radius: 3px;
   background: #2c2f33;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
 
   h4 {
     color: #99aab5;
@@ -303,9 +304,9 @@ const SingularGamer = styled.div`
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  /* padding: 1em; */
   background-color: #2c2f33;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
   color: gray;
   width: 400px;
   height: 650px;
@@ -324,7 +325,7 @@ const SingularGamer = styled.div`
     border-radius: 50%;
     width: 200px;
     height: 200px;
-    box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+    box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);
     cursor: pointer;
   }
 `;
@@ -339,7 +340,8 @@ const FormContainer = styled.form`
   height: 100px;
   margin: 1em auto;
   padding: 0.5em;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
 
   textarea {
     width: 190px;
@@ -365,7 +367,8 @@ const Form = styled.form`
   padding: 0.5em;
   background: #2c2f33;
   border-radius: 3px;
-  box-shadow: 4px 3px 4px 1px rgba(18, 0, 12, 0.7);
+  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
+    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
 
   textarea {
     width: 90%;
@@ -468,24 +471,28 @@ const InputContainer = styled.div`
   }
 
   input {
-    background-color: #99aab5;
-    border: 2px solid #99aab5;
+    background-color: rgba(100, 100, 110, 0.5);
+    border: 2px solid rgba(0, 0, 25, 0.5);
     border-radius: 2px;
   }
 
   button {
-    border: 2px solid #99aab5;
-    background: none;
-    color: #99aab5;
+    border: none;
+    background: rgba(255, 0, 0, 0.6);
+    color: white;
+    width: 40%;
+    padding: 0.25em 0.5em;
     font-weight: bold;
     border-radius: 2px;
-    transition: background 200ms, color 200ms;
+    /* transition: background 200ms, color 200ms; */
     margin-top: 1em;
+    align-self: center;
 
     :hover {
-      background-color: #99aab5;
+      background-color: red;
       color: white;
       cursor: pointer;
+      box-shadow: rgba(18, 0, 12, 0.8) 0px 4px 4px -2px;
     }
   }
 `;
