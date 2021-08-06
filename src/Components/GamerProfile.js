@@ -2,9 +2,10 @@ import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { StyleWrapper } from './StyledComponents/formStyles';
 import { gamersContext } from './Contexts/GamersContext';
+import { Toast } from './StyledComponents/toastNotificationStyles';
 
 const GamerProfile = () => {
   const {
@@ -22,7 +23,8 @@ const GamerProfile = () => {
   const [textArea, setTextArea] = useState('');
   const [showEditName, setShowEditName] = useState(false);
   const [editFirstNameAndUsername, setEditFirstNameAndUsername] = useState();
-
+  const firstNameChecker = useRef(0);
+  const usernameChecker = useRef(0);
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
   const { id } = useParams();
@@ -73,6 +75,35 @@ const GamerProfile = () => {
         }
         return err;
       });
+  };
+
+  const handleEditFirstAndDisplayName = (e, type) => {
+    type === `firstName` && (firstNameChecker.current = e.target.value.length);
+    type === `username` && (usernameChecker.current = e.target.value.length);
+    if (firstNameChecker.current > 30 || usernameChecker.current > 30) {
+      setToastNotification({
+        message: `Fields Cannot Exceed 30 Characters`,
+        type: `Registration-Error`,
+        color: `rgba(80,0,0)`,
+        background: `rgba(255,0,0,0.55)`,
+      });
+    } else {
+      setToastNotification({});
+
+      if (type === `firstName`) {
+        setEditFirstNameAndUsername({
+          ...editFirstNameAndUsername,
+          firstName: e.target.value,
+        });
+      }
+
+      if (type === `username`) {
+        setEditFirstNameAndUsername({
+          ...editFirstNameAndUsername,
+          username: e.target.value,
+        });
+      }
+    }
   };
 
   const handleDeleteAccount = (e) => {
@@ -163,6 +194,14 @@ const GamerProfile = () => {
                 <ChildContainer>
                   {showEditName ? (
                     <InputContainer>
+                      {toastNotification && (
+                        <Toast
+                          color={toastNotification.color}
+                          background={toastNotification.background}
+                        >
+                          {<p>{toastNotification.message}</p>}
+                        </Toast>
+                      )}
                       <div>
                         <label for='editName'>First Name</label>
                         <input
@@ -170,10 +209,7 @@ const GamerProfile = () => {
                           name='editName'
                           placeholder='Enter New Name...'
                           onChange={(e) =>
-                            setEditFirstNameAndUsername({
-                              ...editFirstNameAndUsername,
-                              firstName: e.target.value,
-                            })
+                            handleEditFirstAndDisplayName(e, `firstName`)
                           }
                         />
                       </div>
@@ -184,20 +220,28 @@ const GamerProfile = () => {
                           name='editUserName'
                           placeholder='Enter New Name...'
                           onChange={(e) =>
-                            setEditFirstNameAndUsername({
-                              ...editFirstNameAndUsername,
-                              username: e.target.value,
-                            })
+                            handleEditFirstAndDisplayName(e, `username`)
                           }
                         />
                       </div>
-                      <button onClick={handleEditName}>Save</button>
+                      <button
+                        style={
+                          toastNotification.message && {
+                            pointerEvents: 'none',
+                            backgroundColor: 'rgba(255,0,0,0.3)',
+                            color: 'rgba(255,255,255,0.5',
+                          }
+                        }
+                        onClick={handleEditName}
+                      >
+                        Save
+                      </button>
                     </InputContainer>
                   ) : (
-                    <>
+                    <NamesContainer>
                       <h1>{gamer.firstName}</h1>
                       <h2>{gamer.username}</h2>
-                    </>
+                    </NamesContainer>
                   )}
 
                   <span onClick={() => setShowEditName(!showEditName)}>
@@ -415,8 +459,7 @@ const ChildContainer = styled.div`
   position: absolute;
   width: 45%;
   height: 100%;
-
-  right: 0.5em;
+  right: 0.75em;
   span {
     bottom: 0;
     left: 50%;
@@ -495,4 +538,9 @@ const InputContainer = styled.div`
       box-shadow: rgba(18, 0, 12, 0.8) 0px 4px 4px -2px;
     }
   }
+`;
+
+const NamesContainer = styled.div`
+  word-break: break-all;
+  padding-right: 0.75em;
 `;
