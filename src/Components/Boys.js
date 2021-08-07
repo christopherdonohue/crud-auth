@@ -72,7 +72,7 @@ const Boys = () => {
             <>
               <BoyStyle>
                 <Profile>
-                  {item.username.length <= 20 ? (
+                  {item.username && item.username.length <= 20 ? (
                     <h2>{item.username}</h2>
                   ) : (
                     <h4>{item.username}</h4>

@@ -184,13 +184,15 @@ const GamerProfile = () => {
           <SingularGamer>
             <FirstBlock>
               <InnerBlock>
-                <img
-                  onClick={() =>
-                    setShowImageUploadComponent(!showImageUploadComponent)
-                  }
-                  src={gamer.profilePicture}
-                  alt='Profile Picture'
-                />
+                <div className='image-container'>
+                  <img
+                    onClick={() =>
+                      setShowImageUploadComponent(!showImageUploadComponent)
+                    }
+                    src={gamer.profilePicture}
+                    alt='Profile Picture'
+                  />
+                </div>
                 <ChildContainer>
                   {showEditName ? (
                     <InputContainer>
@@ -365,12 +367,23 @@ const SingularGamer = styled.div`
     color: ${({ color }) => color};
   }
 
-  img {
+  .image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
     border-radius: 50%;
-    width: 200px;
-    height: 200px;
     box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);
-    cursor: pointer;
+  }
+
+  img {
+    position: absolute;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 
