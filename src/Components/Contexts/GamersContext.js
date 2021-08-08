@@ -1,17 +1,18 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Toast } from "../StyledComponents/toastNotificationStyles";
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { Toast } from '../StyledComponents/toastNotificationStyles';
 
 export const gamersContext = React.createContext();
 export const GamersContext = (props) => {
   const [gamers, setGamers] = useState();
   const [updateListofGamers, setUpdateListofGamers] = useState(false);
   const [toastNotification, setToastNotification] = useState({});
+  let timeoutVariable = useRef();
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/findAll")
+      .get('http://localhost:3001/auth/findAll')
       .then((res) => {
         console.log(res);
         setGamers(res.data);
@@ -28,7 +29,8 @@ export const GamersContext = (props) => {
       toastNotification.type &&
       toastNotification.type !== `Registration-Error`
     ) {
-      setTimeout(() => {
+      window.clearTimeout(timeoutVariable.current);
+      timeoutVariable.current = setTimeout(() => {
         setToastNotification({});
       }, 10000);
     }

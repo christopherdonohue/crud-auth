@@ -127,23 +127,37 @@ const GamerProfile = () => {
 
   const handleEditName = (e) => {
     e.preventDefault();
-    axios
-      .put(`http://localhost:3001/gamers/${gamer._id}`, {
-        firstName: editFirstNameAndUsername.firstName,
-        username: editFirstNameAndUsername.username,
-      })
-      .then((res) => {
-        console.log(res);
-        setGamer({
-          ...gamer,
-          firstName: editFirstNameAndUsername.firstName,
-          username: editFirstNameAndUsername.username,
-        });
-        setUpdateListofGamers(true);
-        setShowEditName(false);
-        return res;
-      })
-      .catch((err) => err);
+    if (
+      !editFirstNameAndUsername ||
+      !editFirstNameAndUsername.firstName ||
+      !editFirstNameAndUsername.username
+    ) {
+      setToastNotification({
+        message: `Fields Cannot be Empty`,
+        type: `Registration-Error`,
+        color: `rgba(80,0,0)`,
+        background: `rgba(255,0,0,0.55)`,
+      });
+    } else {
+      const { firstName, username } = editFirstNameAndUsername;
+      axios
+        .put(`http://localhost:3001/gamers/${gamer._id}`, {
+          firstName: firstName,
+          username: username,
+        })
+        .then((res) => {
+          console.log(res);
+          setGamer({
+            ...gamer,
+            firstName: firstName,
+            username: username,
+          });
+          setUpdateListofGamers(true);
+          setShowEditName(false);
+          return res;
+        })
+        .catch((err) => err);
+    }
   };
 
   useEffect(() => {
@@ -369,8 +383,8 @@ const SingularGamer = styled.div`
 
   .image-container {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 12rem;
+    height: 12rem;
     overflow: hidden;
     border-radius: 50%;
     box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);

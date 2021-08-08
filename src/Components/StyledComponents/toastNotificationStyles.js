@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 export const Toast = styled.div`
   position: absolute;
@@ -14,5 +14,5 @@ export const Toast = styled.div`
   text-align: center;
   font-weight: bold;
   font-size: 13px;
-  padding: 4px;
+  padding: 0 0.5em 0 0.5em;
 `;
