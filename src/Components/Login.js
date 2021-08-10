@@ -1,17 +1,17 @@
-import React from "react";
-import { useState, useEffect, useContext } from "react";
-import { Redirect } from "react-router";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 import {
   Form,
   FormContainer,
   StyleWrapper,
   SubmitButton,
-} from "./StyledComponents/formStyles";
-import { gamersContext } from "./Contexts/GamersContext";
-import { Toast } from "./StyledComponents/toastNotificationStyles";
+} from './StyledComponents/formStyles';
+import { gamersContext } from './Contexts/GamersContext';
+import { Toast } from './StyledComponents/toastNotificationStyles';
 
 const Login = () => {
   const location = useLocation();
@@ -20,7 +20,7 @@ const Login = () => {
   // const [toastNotification, setToastNotification] = useState(
   //   location.state ? location.state.toast : {}
   // );
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(false);
 
   const handleChange = (e) => {
@@ -33,13 +33,13 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/auth/login", {
+      .post('http://localhost:3001/auth/login', {
         username: formData.username,
         password: formData.password,
       })
       .then((res) => {
         console.log(`User ${formData.username} Successfully Authenticated!`);
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem('token', res.data.token);
         setUserIsAuthenticated(true);
         setToastNotification({
           message: `Welcome, ${formData.username}!`,
@@ -62,7 +62,7 @@ const Login = () => {
 
   return (
     <>
-      {userIsAuthenticated && <Redirect to="/" />}
+      {userIsAuthenticated && <Redirect to='/' />}
       <StyleWrapper>
         <FormContainer>
           {toastNotification.message &&
@@ -77,20 +77,20 @@ const Login = () => {
             )}
           <Form onSubmit={handleSubmit}>
             <h3>Login</h3>
-            <div className="input-container">
+            <div className='input-container'>
               <input
-                type="text"
-                placeholder="Username"
-                name="username"
+                type='text'
+                placeholder='Username'
+                name='username'
                 onChange={handleChange}
               />
               <input
-                type="password"
-                placeholder="Password"
-                name="password"
+                type='password'
+                placeholder='Password'
+                name='password'
                 onChange={handleChange}
               />
-              <SubmitButton marginTop={`8em`} type="submit">
+              <SubmitButton marginTop={`8em`} type='submit'>
                 Submit
               </SubmitButton>
             </div>

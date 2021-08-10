@@ -187,6 +187,10 @@ const GamerProfile = () => {
     return () => setImage(false);
   }, [image]);
 
+  useEffect(() => {
+    return () => setEditFirstNameAndUsername({});
+  }, [showEditName]);
+
   return (
     <>
       {toastNotification.message &&
@@ -214,8 +218,10 @@ const GamerProfile = () => {
                         <Toast
                           color={toastNotification.color}
                           background={toastNotification.background}
+                          width={`12.3em`}
+                          padding={`0.25rem`}
                         >
-                          {<p>{toastNotification.message}</p>}
+                          {toastNotification.message}
                         </Toast>
                       )}
                       <div>
