@@ -261,8 +261,24 @@ const GamerProfile = () => {
                     </InputContainer>
                   ) : (
                     <NamesContainer>
-                      <h1>{gamer.firstName}</h1>
-                      <h2>{gamer.username}</h2>
+                      {gamer.firstName.length > 20 ? (
+                        <h3>{gamer.firstName}</h3>
+                      ) : gamer.firstName.length > 10 &&
+                        gamer.firstName.length < 20 ? (
+                        <h2>{gamer.firstName}</h2>
+                      ) : (
+                        gamer.firstName.length < 10 && (
+                          <h1>{gamer.firstName}</h1>
+                        )
+                      )}
+                      {gamer.username.length > 20 ? (
+                        <h3>{gamer.username}</h3>
+                      ) : gamer.username.length > 10 &&
+                        gamer.username.length < 20 ? (
+                        <h2>{gamer.username}</h2>
+                      ) : (
+                        gamer.username.length < 10 && <h1>{gamer.username}</h1>
+                      )}
                     </NamesContainer>
                   )}
 
@@ -324,7 +340,21 @@ const StyleWrapper1 = styled.div`
 
 const ImageUploadForm = styled.form`
   text-align: center;
-  margin-top: 1em;
+  position: absolute;
+  animation-name: bgAnim;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  transition-timing-function: ease-in-out;
+  @keyframes bgAnim {
+    from {
+      transform: translate(-5%, 70%);
+    }
+    to {
+      transform: translate(-100%, 70%);
+    }
+  }
+
+  top: 0.5em;
   padding: 0.5em;
   width: 416px;
   border-radius: 3px;
@@ -364,6 +394,7 @@ const Description = styled.div`
 `;
 
 const SingularGamer = styled.div`
+  z-index: 1;
   position: relative;
   display: flex;
   flex-flow: column nowrap;
@@ -394,6 +425,11 @@ const SingularGamer = styled.div`
     overflow: hidden;
     border-radius: 50%;
     box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);
+
+    :active {
+      box-shadow: 3px 4px 5px 2px rgba(18, 0, 12, 0.4);
+      opacity: 0.95;
+    }
   }
 
   img {
@@ -404,6 +440,7 @@ const SingularGamer = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 `;
 
@@ -486,6 +523,7 @@ const FirstBlock = styled.div`
   width: 100%;
   border-radius: 3px 3px 0 0;
   background-color: #393c44;
+  position: relative;
 `;
 
 const ChildContainer = styled.div`
@@ -574,6 +612,6 @@ const InputContainer = styled.div`
 `;
 
 const NamesContainer = styled.div`
-  word-break: break-all;
+  word-break: break-word;
   padding-right: 0.75em;
 `;
