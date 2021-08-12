@@ -27,6 +27,7 @@ const GamerProfile = () => {
   const usernameChecker = useRef(0);
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
+  const [showEditDescription, setShowEditDescription] = useState(false);
   const { id } = useParams();
   let data;
   let files;
@@ -288,9 +289,31 @@ const GamerProfile = () => {
                 </ChildContainer>
               </InnerBlock>
             </FirstBlock>
-            <Description>
-              <p>{gamer.description}</p>
+            <Description
+              onDoubleClick={() => setShowEditDescription(!showEditDescription)}
+            >
+              {showEditDescription ? (
+                <Form>
+                  <textarea
+                    name='textArea'
+                    onChange={(e) => setTextArea(e.target.value)}
+                  ></textarea>
+                </Form>
+              ) : (
+                <p>{gamer.description}</p>
+              )}
             </Description>
+            <div className='submit-description'>
+              {showEditDescription && (
+                <input
+                  className='submit-description-input'
+                  onClick={submitText}
+                  type='submit'
+                  value='Submit'
+                />
+              )}
+            </div>
+
             <DeleteDiv>
               <span onClick={handleDeleteAccount}>DELETE ACCOUNT</span>
             </DeleteDiv>
@@ -309,13 +332,13 @@ const GamerProfile = () => {
               </div>
             </ImageUploadForm>
           )}
-          <Form onSubmit={submitText}>
+          {/* <Form onSubmit={submitText}>
             <textarea
               name='textArea'
               onChange={(e) => setTextArea(e.target.value)}
             ></textarea>
             <input type='submit' value='Submit' />
-          </Form>
+          </Form> */}
         </StyleWrapper1>
       )}
     </>
@@ -387,10 +410,12 @@ const ImageUploadForm = styled.form`
 
 const Description = styled.div`
   width: 100%;
-  height: auto;
+  height: 40%;
   overflow-y: auto;
+
   /* background-color: #394244; */
   padding: 1em 0 1em 0;
+  position: relative;
 `;
 
 const SingularGamer = styled.div`
@@ -442,6 +467,31 @@ const SingularGamer = styled.div`
     transform: translate(-50%, -50%);
     cursor: pointer;
   }
+  .submit-description-input {
+    padding: 0.38em 0em;
+    width: 100%;
+    background: none;
+    color: #0153af;
+    font-weight: bolder;
+    border: 2px solid #0153af;
+    outline: none;
+    text-decoration: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 200ms, color 200ms;
+
+    :hover {
+      background: #0153af;
+      color: white;
+    }
+  }
+
+  .submit-description {
+    width: 96.5%;
+    padding: 0 0em;
+    position: absolute;
+    bottom: 7.2em;
+  }
 `;
 
 const FormContainer = styled.form`
@@ -471,28 +521,22 @@ const FormContainer = styled.form`
 `;
 
 const Form = styled.form`
-  margin-top: 1em;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  width: 220px;
-  height: 120px;
+  width: 94%;
+  height: 85%;
   padding: 0.5em;
-  background: #2c2f33;
-  border-radius: 3px;
-  box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
-    rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
+  position: absolute;
 
   textarea {
-    width: 90%;
-    height: 50%;
-    background: #99aab5;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
     outline: none;
     border: 2px solid #99aab5;
     border-radius: 1px;
     text-decoration: none;
     transition: border 200ms;
+    font-size: 1rem;
+    color: #99aab5;
     :focus {
       border: 2px solid #ef99f7;
     }
@@ -588,6 +632,11 @@ const InputContainer = styled.div`
     background-color: rgba(100, 100, 110, 0.5);
     border: 2px solid rgba(0, 0, 25, 0.5);
     border-radius: 2px;
+    outline: none;
+    transition: border 200ms;
+    :focus {
+      border: 2px solid #ef99f7;
+    }
   }
 
   button {
