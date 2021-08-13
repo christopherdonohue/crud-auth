@@ -377,7 +377,7 @@ const ImageUploadForm = styled.form`
     }
   }
 
-  top: 0.5em;
+  top: 5.5em;
   padding: 0.5em;
   width: 416px;
   border-radius: 3px;

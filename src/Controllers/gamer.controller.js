@@ -69,6 +69,7 @@ exports.create = (req, res) => {
           {
             $push: {
               posts: {
+                userId: authorizedData.id,
                 postBody: req.body.data,
                 datePosted: req.body.datePosted,
               },

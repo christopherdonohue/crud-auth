@@ -9,6 +9,28 @@ const Posts = () => {
   const { gamers, setGamers, updateListofGamers, setUpdateListofGamers } =
     useContext(gamersContext);
   const [posts, setPosts] = useState();
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    axios
+      .post(
+        `http://localhost:3001/gamers/findOne`,
+        {},
+        {
+          headers: {
+            authorization: `token: ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setUserId(res.data.gamer._id);
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, []);
 
   useEffect(() => {
     let postsArray = [];
@@ -26,6 +48,7 @@ const Posts = () => {
             post: post.postBody,
             username: username,
             datePosted: datePosted,
+            userId: post.userId,
           });
         });
       });
@@ -41,6 +64,12 @@ const Posts = () => {
           return (
             <div>
               <Card>
+                {post.userId && userId === post.userId && (
+                  <div>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                  </div>
+                )}
                 <h2>{post.username}</h2>
                 <p>{post.post}</p>
                 <h5>{post.datePosted}</h5>

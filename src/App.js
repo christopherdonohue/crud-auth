@@ -27,7 +27,7 @@ function App() {
       )
       .then((res) => {
         setUpdateListofGamers(true);
-        console.log(res.status);
+        console.log(res.data.authorizedData.id);
         return res;
       })
       .catch((err) => {
