@@ -28,6 +28,10 @@ const GamerProfile = () => {
   const [showImageUploadComponent, setShowImageUploadComponent] =
     useState(false);
   const [showEditDescription, setShowEditDescription] = useState(false);
+  const [
+    showAbilityToChangeProfilePicture,
+    setShowAbilityToChangeProfilePicture,
+  ] = useState(false);
   const { id } = useParams();
   let data;
   let files;
@@ -192,6 +196,16 @@ const GamerProfile = () => {
     return () => setEditFirstNameAndUsername({});
   }, [showEditName]);
 
+  useEffect(() => {
+    // On initial render, if they click "edit profile" after freshly logging in, the toast notification may still be visible from before logging in.
+    // We want to make sure that toast notification doesn't still diesplay on the profile from logging in.
+    if (toastNotification) {
+      setToastNotification({});
+    }
+  }, []);
+
+  useEffect(() => {}, [showAbilityToChangeProfilePicture]);
+
   return (
     <>
       {toastNotification.message &&
@@ -203,15 +217,47 @@ const GamerProfile = () => {
           <SingularGamer>
             <FirstBlock>
               <InnerBlock>
-                <div className='image-container'>
-                  <img
-                    onClick={() =>
-                      setShowImageUploadComponent(!showImageUploadComponent)
-                    }
-                    src={gamer.profilePicture}
-                    alt='Profile Picture'
-                  />
-                </div>
+                {!showAbilityToChangeProfilePicture ? (
+                  <div className='image-container'>
+                    <img
+                      // onClick={() =>
+                      //   setShowImageUploadComponent(!showImageUploadComponent)
+                      // }
+                      onMouseEnter={() =>
+                        setShowAbilityToChangeProfilePicture(true)
+                      }
+                      onMouseLeave={() =>
+                        setShowAbilityToChangeProfilePicture(false)
+                      }
+                      src={gamer.profilePicture}
+                      alt='Profile Picture'
+                    />
+                  </div>
+                ) : (
+                  <div className='image-container'>
+                    <img
+                      className='change-profile-picture'
+                      onClick={() =>
+                        setShowImageUploadComponent(!showImageUploadComponent)
+                      }
+                      onMouseEnter={() =>
+                        setShowAbilityToChangeProfilePicture(true)
+                      }
+                      onMouseLeave={() =>
+                        setShowAbilityToChangeProfilePicture(false)
+                      }
+                      src={gamer.profilePicture}
+                      alt='Profile Picture'
+                    />
+                    <EditProfilePicture
+                      onMouseEnter={() =>
+                        setShowAbilityToChangeProfilePicture(true)
+                      }
+                    >
+                      Edit Profile Picture
+                    </EditProfilePicture>
+                  </div>
+                )}
                 <ChildContainer>
                   {showEditName ? (
                     <InputContainer>
@@ -453,7 +499,10 @@ const SingularGamer = styled.div`
 
     :active {
       box-shadow: 3px 4px 5px 2px rgba(18, 0, 12, 0.4);
-      opacity: 0.95;
+    }
+
+    .change-profile-picture {
+      opacity: 0.5;
     }
   }
 
@@ -663,4 +712,15 @@ const InputContainer = styled.div`
 const NamesContainer = styled.div`
   word-break: break-word;
   padding-right: 0.75em;
+`;
+
+const EditProfilePicture = styled.div`
+  position: absolute;
+  color: lightblue;
+  pointer-events: none;
+  font-size: 1.1rem;
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, -357%);
+  width: 90%;
 `;
