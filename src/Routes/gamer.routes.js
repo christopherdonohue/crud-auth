@@ -34,6 +34,8 @@ module.exports = (app) => {
 
   app.put('/gamers/:gamerId', gamers.update);
 
+  app.patch('/gamers/:gamerId', gamers.updatePost);
+
   app.delete('/gamers/:gamerId', gamers.delete);
   //
 };

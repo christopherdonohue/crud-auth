@@ -195,6 +195,17 @@ exports.update = (req, res) => {
   );
 };
 
+exports.updatePost = (req, res) => {
+  Gamer.findByIdAndUpdate(
+    req.params.gamerId,
+    { $set: { 'posts.2.postBody': 'req.data.newPost' } },
+    (err, gamer) => {
+      if (err) throw err;
+      res.status(200).json({ msg: 'Post Updated', posts: gamer.posts });
+    }
+  );
+};
+
 exports.delete = (req, res) => {
   Gamer.findByIdAndDelete(req.params.gamerId, (err, gamer) => {
     if (err) throw err;

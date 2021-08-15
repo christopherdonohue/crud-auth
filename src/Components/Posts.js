@@ -10,6 +10,9 @@ const Posts = () => {
     useContext(gamersContext);
   const [posts, setPosts] = useState();
   const [userId, setUserId] = useState();
+  const [editPost, setEditPost] = useState(false);
+  const [booleansArray, setBooleansArray] = useState();
+  const [editedPost, setEditedPost] = useState();
 
   useEffect(() => {
     axios
@@ -57,21 +60,69 @@ const Posts = () => {
     return () => setUpdateListofGamers(false);
   }, [updateListofGamers, gamers]);
 
+  useEffect(() => {
+    let count = [];
+    if (posts) {
+      posts.forEach((post) => {
+        count.push(false);
+      });
+      setBooleansArray(count);
+    }
+  }, [posts]);
+
+  useEffect(() => {
+    if (editPost) {
+    }
+  }, [editPost]);
+
+  const handleEditPost = (index) => {
+    let temp = [...booleansArray];
+    temp[index] = !temp[index];
+    setBooleansArray(temp);
+    setEditPost(!editPost);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setEditedPost(e.target.value);
+  };
+
+  const handleSubmitEditedPost = (index) => {
+    axios
+      .patch(`http://localhost:3001/gamers/${userId}`, {
+        index: index,
+        newPost: editedPost,
+      })
+      .then((res) => {
+        console.log(res.data);
+        return res;
+      })
+      .catch((err) => err);
+  };
+
   return (
     <Container>
       {posts &&
-        posts.map((post) => {
+        posts.map((post, index) => {
           return (
             <div>
               <Card>
                 {post.userId && userId === post.userId && (
                   <div>
-                    <button>Edit</button>
+                    <button onClick={() => handleEditPost(index)}>Edit</button>
                     <button>Delete</button>
                   </div>
                 )}
                 <h2>{post.username}</h2>
-                <p>{post.post}</p>
+                {booleansArray && !booleansArray[index] && <p>{post.post}</p>}
+                {editPost && userId === post.userId && (
+                  <ContainerToEditPost>
+                    <Textarea onChange={handleChange}>{post.post}</Textarea>
+                    <button onClick={() => handleSubmitEditedPost(index)}>
+                      Submit
+                    </button>
+                  </ContainerToEditPost>
+                )}
                 <h5>{post.datePosted}</h5>
               </Card>
             </div>
@@ -83,7 +134,24 @@ const Posts = () => {
 
 export default Posts;
 
+const ContainerToEditPost = styled.div`
+  position: absolute;
+  width: 90%;
+  height: 45%;
+  bottom: 0;
+  transform: translateY(-55%);
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 80%;
+  border: 2px solid gray;
+  background-color: transparent;
+  color: white;
+`;
+
 const Card = styled.div`
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
