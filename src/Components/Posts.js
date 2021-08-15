@@ -141,7 +141,11 @@ const Posts = () => {
                   </IconsContainer>
                 )}
                 <h2>{post.username}</h2>
-                {booleansArray && !booleansArray[index] && <p>{post.post}</p>}
+                {booleansArray && !booleansArray[index] && (
+                  <PostContainer>
+                    <div>{post.post}</div>
+                  </PostContainer>
+                )}
                 {userId === post.userId &&
                   booleansArray &&
                   booleansArray[index] && (
@@ -168,6 +172,10 @@ const Posts = () => {
 
 export default Posts;
 
+const PostContainer = styled.div`
+  padding: 0.5rem 0.75rem;
+`;
+
 const SaveButton = styled.button`
   width: 98%;
   border: 2px solid green;
@@ -178,7 +186,7 @@ const SaveButton = styled.button`
   font-weight: bold;
 
   :hover {
-    box-shadow: rgba(18, 0, 12, 0.8) 0px 4px 4px -2px;
+    box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 6px -2px;
     cursor: pointer;
   }
 `;
@@ -192,12 +200,8 @@ const IconsContainer = styled.div`
 `;
 
 const ContainerToEditPost = styled.div`
-  position: absolute;
   width: 95%;
-  height: 45%;
-  bottom: 0;
-  right: 50%;
-  transform: translate(50%, -55%);
+  height: 25%;
 `;
 
 const Textarea = styled.textarea`
@@ -212,15 +216,14 @@ const Card = styled.div`
   position: relative;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
   margin: 1em;
   padding: 0.5em;
   background: #2c2f33;
   width: 8em;
   min-width: 300px;
-  height: 9em;
-  min-height: 250px;
+  min-height: 15em;
   text-align: center;
   color: #99aab5;
   box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
@@ -231,9 +234,9 @@ const Card = styled.div`
   white-space: pre-wrap;
 
   h5 {
-    position: absolute;
+    /* position: absolute;
     bottom: 0;
-    transform: translateY(40%);
+    transform: translateY(40%); */
   }
 `;
 
