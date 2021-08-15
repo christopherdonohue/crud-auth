@@ -10,9 +10,11 @@ const Posts = () => {
     useContext(gamersContext);
   const [posts, setPosts] = useState();
   const [userId, setUserId] = useState();
-  const [editPost, setEditPost] = useState(false);
+  const [editPost, setEditPost] = useState({ bool: false });
   const [booleansArray, setBooleansArray] = useState();
   const [editedPost, setEditedPost] = useState();
+  const [postIndexUniqueToLoggedInUser, setPostIndexUniqueToLoggedInUser] =
+    useState();
 
   useEffect(() => {
     axios
@@ -71,15 +73,26 @@ const Posts = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (editPost) {
+    let temp;
+    if (editPost.bool) {
+      gamers.forEach((gamer) => {
+        if (gamer._id === userId) {
+          gamer.posts.map((post, index) => {
+            if (post.postBody === editPost.post) {
+              temp = index;
+            }
+          });
+        }
+      });
     }
+    setPostIndexUniqueToLoggedInUser(temp);
   }, [editPost]);
 
-  const handleEditPost = (index) => {
+  const handleEditPost = (index, post) => {
     let temp = [...booleansArray];
     temp[index] = !temp[index];
     setBooleansArray(temp);
-    setEditPost(!editPost);
+    setEditPost({ bool: !editPost.bool, post: post });
   };
 
   const handleChange = (e) => {
@@ -88,6 +101,7 @@ const Posts = () => {
   };
 
   const handleSubmitEditedPost = (index) => {
+    console.log(index);
     axios
       .patch(`http://localhost:3001/gamers/${userId}`, {
         index: index,
@@ -109,16 +123,24 @@ const Posts = () => {
               <Card>
                 {post.userId && userId === post.userId && (
                   <div>
-                    <button onClick={() => handleEditPost(index)}>Edit</button>
+                    <button
+                      onClick={() => handleEditPost(index, `${post.post}`)}
+                    >
+                      Edit
+                    </button>
                     <button>Delete</button>
                   </div>
                 )}
                 <h2>{post.username}</h2>
                 {booleansArray && !booleansArray[index] && <p>{post.post}</p>}
-                {editPost && userId === post.userId && (
+                {editPost.bool && userId === post.userId && (
                   <ContainerToEditPost>
                     <Textarea onChange={handleChange}>{post.post}</Textarea>
-                    <button onClick={() => handleSubmitEditedPost(index)}>
+                    <button
+                      onClick={() =>
+                        handleSubmitEditedPost(postIndexUniqueToLoggedInUser)
+                      }
+                    >
                       Submit
                     </button>
                   </ContainerToEditPost>

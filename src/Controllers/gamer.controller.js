@@ -196,9 +196,11 @@ exports.update = (req, res) => {
 };
 
 exports.updatePost = (req, res) => {
+  console.log(req.body.index);
+  const i = req.body.index;
   Gamer.findByIdAndUpdate(
-    req.params.gamerId,
-    { $set: { 'posts.2.postBody': 'req.data.newPost' } },
+    { _id: req.params.gamerId, posts: 'sdfwsdfsdf' },
+    { $set: { 'posts.$': req.body.newPost } },
     (err, gamer) => {
       if (err) throw err;
       res.status(200).json({ msg: 'Post Updated', posts: gamer.posts });
