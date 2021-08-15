@@ -4,6 +4,8 @@ import axios from 'axios';
 import { gamersContext } from './Contexts/GamersContext';
 import styled from 'styled-components';
 import { ThemeProvider } from 'styled-components';
+import { BiEdit } from 'react-icons/bi';
+import { MdDelete } from 'react-icons/md';
 
 const Posts = () => {
   const { gamers, setGamers, updateListofGamers, setUpdateListofGamers } =
@@ -51,6 +53,7 @@ const Posts = () => {
           }/${dateString.getDate()}/${dateString.getFullYear()}\n${dateString.getHours()}:${dateString.getMinutes()}:${dateString.getSeconds()}`;
           postsArray.push({
             post: post.postBody,
+            postId: post.postId,
             username: username,
             datePosted: datePosted,
             userId: post.userId,
@@ -72,24 +75,9 @@ const Posts = () => {
     }
   }, [posts]);
 
-  useEffect(() => {
-    let temp;
-    if (editPost.bool) {
-      gamers.forEach((gamer) => {
-        if (gamer._id === userId) {
-          gamer.posts.map((post, index) => {
-            if (post.postBody === editPost.post) {
-              temp = index;
-            }
-          });
-        }
-      });
-    }
-    setPostIndexUniqueToLoggedInUser(temp);
-  }, [editPost]);
-
   const handleEditPost = (index, post) => {
     let temp = [...booleansArray];
+    console.log(temp);
     temp[index] = !temp[index];
     setBooleansArray(temp);
     setEditPost({ bool: !editPost.bool, post: post });
@@ -100,18 +88,33 @@ const Posts = () => {
     setEditedPost(e.target.value);
   };
 
-  const handleSubmitEditedPost = (index) => {
-    console.log(index);
+  const handleSubmitEditedPost = (postId) => {
+    console.log(postId);
     axios
       .patch(`http://localhost:3001/gamers/${userId}`, {
-        index: index,
+        postId: postId,
         newPost: editedPost,
       })
       .then((res) => {
         console.log(res.data);
+        setUpdateListofGamers(true);
         return res;
       })
       .catch((err) => err);
+  };
+
+  const handleDeletePost = (postId) => {
+    axios
+      .patch(`http://localhost:3001/gamers/deletePost/${userId}`, {
+        postId: postId,
+      })
+      .then((res) => {
+        setUpdateListofGamers(true);
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
   };
 
   return (
@@ -122,29 +125,38 @@ const Posts = () => {
             <div>
               <Card>
                 {post.userId && userId === post.userId && (
-                  <div>
-                    <button
-                      onClick={() => handleEditPost(index, `${post.post}`)}
-                    >
-                      Edit
-                    </button>
-                    <button>Delete</button>
-                  </div>
+                  <IconsContainer>
+                    <BiEdit
+                      cursor={'pointer'}
+                      size={'1.25rem'}
+                      fill={'rgba(0,255,0,0.5)'}
+                      onClick={() => handleEditPost(index, post.post)}
+                    />
+                    <MdDelete
+                      cursor={'pointer'}
+                      size={'1.25rem'}
+                      fill={'rgba(255,0,0,0.7'}
+                      onClick={() => handleDeletePost(post.postId)}
+                    />
+                  </IconsContainer>
                 )}
                 <h2>{post.username}</h2>
                 {booleansArray && !booleansArray[index] && <p>{post.post}</p>}
-                {editPost.bool && userId === post.userId && (
-                  <ContainerToEditPost>
-                    <Textarea onChange={handleChange}>{post.post}</Textarea>
-                    <button
-                      onClick={() =>
-                        handleSubmitEditedPost(postIndexUniqueToLoggedInUser)
-                      }
-                    >
-                      Submit
-                    </button>
-                  </ContainerToEditPost>
-                )}
+                {userId === post.userId &&
+                  booleansArray &&
+                  booleansArray[index] && (
+                    <ContainerToEditPost>
+                      <Textarea
+                        onChange={handleChange}
+                        defaultValue={post.post}
+                      />
+                      <SaveButton
+                        onClick={() => handleSubmitEditedPost(post.postId)}
+                      >
+                        Save
+                      </SaveButton>
+                    </ContainerToEditPost>
+                  )}
                 <h5>{post.datePosted}</h5>
               </Card>
             </div>
@@ -156,16 +168,40 @@ const Posts = () => {
 
 export default Posts;
 
+const SaveButton = styled.button`
+  width: 98%;
+  border: 2px solid green;
+  border-radius: 2px;
+  background-color: green;
+  color: white;
+  margin-top: 0.25em;
+  font-weight: bold;
+
+  :hover {
+    box-shadow: rgba(18, 0, 12, 0.8) 0px 4px 4px -2px;
+    cursor: pointer;
+  }
+`;
+
+const IconsContainer = styled.div`
+  position: absolute;
+  top: 0.1em;
+  right: 0.1em;
+  display: flex;
+  gap: 0.2em;
+`;
+
 const ContainerToEditPost = styled.div`
   position: absolute;
-  width: 90%;
+  width: 95%;
   height: 45%;
   bottom: 0;
-  transform: translateY(-55%);
+  right: 50%;
+  transform: translate(50%, -55%);
 `;
 
 const Textarea = styled.textarea`
-  width: 100%;
+  width: 95%;
   height: 80%;
   border: 2px solid gray;
   background-color: transparent;
@@ -178,9 +214,8 @@ const Card = styled.div`
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  position: relative;
   margin: 1em;
-  padding: 7px;
+  padding: 0.5em;
   background: #2c2f33;
   width: 8em;
   min-width: 300px;
@@ -198,6 +233,7 @@ const Card = styled.div`
   h5 {
     position: absolute;
     bottom: 0;
+    transform: translateY(40%);
   }
 `;
 

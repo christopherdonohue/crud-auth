@@ -36,6 +36,8 @@ module.exports = (app) => {
 
   app.patch('/gamers/:gamerId', gamers.updatePost);
 
+  app.patch('/gamers/deletePost/:gamerId', gamers.deletePost);
+
   app.delete('/gamers/:gamerId', gamers.delete);
   //
 };

@@ -70,6 +70,7 @@ exports.create = (req, res) => {
             $push: {
               posts: {
                 userId: authorizedData.id,
+                postId: req.body.datePosted,
                 postBody: req.body.data,
                 datePosted: req.body.datePosted,
               },
@@ -196,14 +197,30 @@ exports.update = (req, res) => {
 };
 
 exports.updatePost = (req, res) => {
-  console.log(req.body.index);
-  const i = req.body.index;
-  Gamer.findByIdAndUpdate(
-    { _id: req.params.gamerId, posts: 'sdfwsdfsdf' },
-    { $set: { 'posts.$': req.body.newPost } },
+  Gamer.updateOne(
+    { 'posts.postId': req.body.postId },
+    {
+      $set: {
+        'posts.$.postBody': req.body.newPost,
+        'posts.$.datePosted': Date.now(),
+      },
+    },
     (err, gamer) => {
       if (err) throw err;
       res.status(200).json({ msg: 'Post Updated', posts: gamer.posts });
+    }
+  );
+};
+
+exports.deletePost = (req, res) => {
+  Gamer.updateOne(
+    { 'posts.postId': req.body.postId },
+    {
+      $pull: { posts: { postId: req.body.postId } },
+    },
+    (err, gamer) => {
+      if (err) throw err;
+      res.status(200).json({ msg: 'Post Deleted', posts: gamer.posts });
     }
   );
 };
