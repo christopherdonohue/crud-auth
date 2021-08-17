@@ -8,8 +8,12 @@ import { Toast } from './Components/StyledComponents/toastNotificationStyles';
 require('dotenv').config();
 
 function App() {
-  const { setUpdateListofGamers, toastNotification, setToastNotification } =
-    useContext(gamersContext);
+  const {
+    updateListofGamers,
+    setUpdateListofGamers,
+    toastNotification,
+    setToastNotification,
+  } = useContext(gamersContext);
   const [textArea, setTextArea] = useState('');
   const [userAuthorized, setUserAuthorized] = useState(true);
 
@@ -41,6 +45,7 @@ function App() {
   return (
     <>
       {!userAuthorized && <Redirect to='/login' />}
+      {updateListofGamers && <Redirect to='/posts' />}
       <StyleWrapper>
         <Title>
           <img
