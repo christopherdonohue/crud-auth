@@ -122,12 +122,11 @@ const BoyStyle = styled.div`
 
   img {
     position: absolute;
-    max-width: 100%;
     width: 100%;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    inset: 0;
+    margin: auto;
+    object-fit: cover;
   }
   img.landscape {
     height: 100%;
@@ -163,10 +162,6 @@ const Profile = styled.div`
   }
 
   .description {
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, 0%); */
-
     text-align: center;
     color: #99aab5;
     width: 92%;

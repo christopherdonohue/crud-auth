@@ -342,6 +342,7 @@ const GamerProfile = () => {
                 <Form>
                   <textarea
                     name='textArea'
+                    autoFocus={true}
                     onChange={(e) => setTextArea(e.target.value)}
                   ></textarea>
                 </Form>
@@ -510,11 +511,11 @@ const SingularGamer = styled.div`
     position: absolute;
     max-width: 100%;
     width: 100%;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    inset: 0;
+    margin: auto;
     cursor: pointer;
+    object-fit: cover;
   }
   .submit-description-input {
     padding: 0.38em 0em;
