@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { SketchPicker } from 'react-color';
 import { Redirect, useLocation, useParams, useHistory } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { StyleWrapper } from './StyledComponents/formStyles';
@@ -18,6 +19,7 @@ const GamerProfile = () => {
   const location = useLocation();
   const history = useHistory();
   const [image, setImage] = useState();
+
   const [gamer, setGamer] = useState(
     location.state ? location.state.gamer : {}
   );
@@ -168,27 +170,29 @@ const GamerProfile = () => {
     }
   };
 
-  const handleTextColorChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
+  const handleTextColorChange = (color) => {
+    // e.preventDefault();
+    console.log(color.hex);
+    // setColor(color.hex);
     if (displayAbilityToChangeTextColor.type === 'firstName') {
       setGamer({
         ...gamer,
-        firstName: { value: gamer.firstName.value, color: e.target.value },
+        firstName: { value: gamer.firstName.value, color: color.hex },
       });
     } else {
       setGamer({
         ...gamer,
-        username: { value: gamer.username.value, color: e.target.value },
+        username: { value: gamer.username.value, color: color.hex },
       });
     }
   };
 
-  const handleSaveTextColor = (e) => {
+  const handleSaveTextColor = (color) => {
+    console.log(`server call`);
     if (displayAbilityToChangeTextColor.type === 'firstName') {
       axios
         .patch(`http://localhost:3001/gamers/${gamer._id}/changeColor`, {
-          color: gamer.firstName.color,
+          color: color.hex,
           type: 'firstName',
         })
         .then((res) => {
@@ -200,7 +204,7 @@ const GamerProfile = () => {
     } else {
       axios
         .patch(`http://localhost:3001/gamers/${gamer._id}/changeColor`, {
-          color: gamer.username.color,
+          color: color.hex,
           type: 'username',
         })
         .then((res) => {
@@ -210,6 +214,10 @@ const GamerProfile = () => {
         .catch((err) => err);
     }
   };
+
+  // useEffect(() => {
+  //   window.history.replaceState({ gamer: gamer }, '');
+  // }, [gamer]);
 
   useEffect(() => {
     if (image) {
@@ -245,6 +253,7 @@ const GamerProfile = () => {
   useEffect(() => {
     // On initial render, if they click "edit profile" after freshly logging in, the toast notification may still be visible from before logging in.
     // We want to make sure that toast notification doesn't still diesplay on the profile from logging in.
+
     if (toastNotification) {
       setToastNotification({});
     }
@@ -436,12 +445,15 @@ const GamerProfile = () => {
                   )}
                   {displayAbilityToChangeTextColor.bool && (
                     <TextColorChangerContainer>
-                      <input
-                        type='text'
-                        placeholder='#552efa'
+                      <SketchPicker
+                        color={
+                          displayAbilityToChangeTextColor.type === 'firstName'
+                            ? gamer.firstName.color
+                            : gamer.username.color
+                        }
                         onChange={handleTextColorChange}
+                        onChangeComplete={handleSaveTextColor}
                       />
-                      <button onClick={handleSaveTextColor}>Save</button>
                     </TextColorChangerContainer>
                   )}
                   <span onClick={() => setShowEditName(!showEditName)}>
@@ -510,9 +522,8 @@ const GamerProfile = () => {
 export default GamerProfile;
 
 const TextColorChangerContainer = styled.div`
-  position: absolute;
-  border: 2px solid yellow;
-  width: 12rem;
+  width: 14rem;
+  transform: translate(85%, -50%);
 `;
 
 const H3 = styled.h3`
