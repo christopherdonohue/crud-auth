@@ -1,18 +1,18 @@
-import React from "react";
-import styled, { ThemeProvider } from "styled-components";
-import { useState, useRef, useEffect, useContext } from "react";
-import { Redirect } from "react-router";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+import React from 'react';
+import styled, { ThemeProvider } from 'styled-components';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import {
   Form,
   FormContainer,
   StyleWrapper,
   SubmitButton,
-} from "./StyledComponents/formStyles";
-import { Toast } from "./StyledComponents/toastNotificationStyles";
-import { gamersContext } from "./Contexts/GamersContext";
-import { fromPairs } from "lodash";
+} from './StyledComponents/formStyles';
+import { Toast } from './StyledComponents/toastNotificationStyles';
+import { gamersContext } from './Contexts/GamersContext';
+import { fromPairs } from 'lodash';
 
 const Register = () => {
   const passwordPattern =
@@ -27,10 +27,10 @@ const Register = () => {
   //let allFieldsInFormFilled = useRef(false);
   const [allFieldsInFormFilled, setAllFieldsInFormFilled] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
+    firstName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
   });
   const history = useHistory();
 
@@ -43,12 +43,12 @@ const Register = () => {
     }
 
     axios
-      .post("http://localhost:3001/auth/register", {
-        firstName: formData.firstName,
-        username: formData.username,
+      .post('http://localhost:3001/auth/register', {
+        firstName: { value: formData.firstName, color: '#99aab5' },
+        username: { value: formData.username, color: '#99aab5' },
         password: formData.password,
         profilePicture:
-          "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+          'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg',
       })
       .then((res) => {
         console.log(`Successfully registered ${formData.username}!`);
@@ -73,10 +73,10 @@ const Register = () => {
 
   useEffect(() => {
     if (
-      formData.firstName !== "" &&
-      formData.username !== "" &&
-      formData.password !== "" &&
-      formData.confirmPassword !== ""
+      formData.firstName !== '' &&
+      formData.username !== '' &&
+      formData.password !== '' &&
+      formData.confirmPassword !== ''
     ) {
       console.log(formData);
       setAllFieldsInFormFilled(true);
@@ -114,7 +114,7 @@ const Register = () => {
 
   return (
     <>
-      {updateListofGamers && <Redirect to="/login" />}
+      {updateListofGamers && <Redirect to='/login' />}
       <StyleWrapper>
         <FormContainer>
           {toastNotification.type === `Registration-Error` && (
@@ -127,33 +127,33 @@ const Register = () => {
           )}
           <Form onSubmit={handleSubmit}>
             <h3>Register</h3>
-            <div className="input-container">
+            <div className='input-container'>
               <input
-                type="text"
-                placeholder="First Name"
-                name="firstName"
+                type='text'
+                placeholder='First Name'
+                name='firstName'
                 onChange={handleChange}
               />
               <input
-                type="text"
-                placeholder="Username"
-                name="username"
+                type='text'
+                placeholder='Username'
+                name='username'
                 onChange={handleChange}
               />
               <input
-                type="password"
-                placeholder="Password"
-                name="password"
+                type='password'
+                placeholder='Password'
+                name='password'
                 onChange={handleChange}
               />
               <input
-                type="password"
-                placeholder="Confirm Password"
-                name="confirmPassword"
+                type='password'
+                placeholder='Confirm Password'
+                name='confirmPassword'
                 onChange={handleChange}
               />
               <SubmitButton
-                type="submit"
+                type='submit'
                 pointerEvents={
                   (!allFieldsInFormFilled ||
                     (toastNotification.type &&

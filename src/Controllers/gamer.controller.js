@@ -23,7 +23,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
   Gamer.findOne(
     {
-      username: req.body.username,
+      'username.value': req.body.username.value,
     },
     (err, gamer) => {
       if (err) throw err;
@@ -39,8 +39,8 @@ exports.login = (req, res) => {
         token: jwt.sign(
           {
             id: gamer._id,
-            username: gamer.username,
-            firstName: gamer.firstName,
+            username: gamer.username.value,
+            firstName: gamer.firstName.value,
           },
           privateKey,
           { expiresIn: '1 hour', algorithm: 'RS256' }
@@ -223,6 +223,28 @@ exports.deletePost = (req, res) => {
       res.status(200).json({ msg: 'Post Deleted', posts: gamer.posts });
     }
   );
+};
+
+exports.changeColor = (req, res) => {
+  if (req.body.type === 'firstName') {
+    Gamer.findByIdAndUpdate(
+      { _id: req.params.gamerId },
+      { 'firstName.color': req.body.color },
+      (err, gamer) => {
+        if (err) throw err;
+        res.status(200).json({ msg: 'Color Changed' });
+      }
+    );
+  } else {
+    Gamer.findByIdAndUpdate(
+      { _id: req.params.gamerId },
+      { 'username.color': req.body.color },
+      (err, gamer) => {
+        if (err) throw err;
+        res.status(200).json({ msg: 'Color Changed' });
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {

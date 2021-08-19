@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Redirect, useLocation, useParams } from 'react-router-dom';
+import { Redirect, useLocation, useParams, useHistory } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { StyleWrapper } from './StyledComponents/formStyles';
 import { gamersContext } from './Contexts/GamersContext';
@@ -16,6 +16,7 @@ const GamerProfile = () => {
     toastNotification,
   } = useContext(gamersContext);
   const location = useLocation();
+  const history = useHistory();
   const [image, setImage] = useState();
   const [gamer, setGamer] = useState(
     location.state ? location.state.gamer : {}
@@ -32,6 +33,8 @@ const GamerProfile = () => {
     showAbilityToChangeProfilePicture,
     setShowAbilityToChangeProfilePicture,
   ] = useState(false);
+  const [displayAbilityToChangeTextColor, setDisplayAbilityToChangeTextColor] =
+    useState({ bool: false, type: null });
   const { id } = useParams();
   let data;
   let files;
@@ -147,18 +150,61 @@ const GamerProfile = () => {
       const { firstName, username } = editFirstNameAndUsername;
       axios
         .put(`http://localhost:3001/gamers/${gamer._id}`, {
-          firstName: firstName,
-          username: username,
+          firstName: { value: firstName },
+          username: { value: username },
         })
         .then((res) => {
           console.log(res);
           setGamer({
             ...gamer,
-            firstName: firstName,
-            username: username,
+            firstName: { value: firstName },
+            username: { value: username },
           });
           setUpdateListofGamers(true);
           setShowEditName(false);
+          return res;
+        })
+        .catch((err) => err);
+    }
+  };
+
+  const handleTextColorChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    if (displayAbilityToChangeTextColor.type === 'firstName') {
+      setGamer({
+        ...gamer,
+        firstName: { value: gamer.firstName.value, color: e.target.value },
+      });
+    } else {
+      setGamer({
+        ...gamer,
+        username: { value: gamer.username.value, color: e.target.value },
+      });
+    }
+  };
+
+  const handleSaveTextColor = (e) => {
+    if (displayAbilityToChangeTextColor.type === 'firstName') {
+      axios
+        .patch(`http://localhost:3001/gamers/${gamer._id}/changeColor`, {
+          color: gamer.firstName.color,
+          type: 'firstName',
+        })
+        .then((res) => {
+          setUpdateListofGamers(true);
+
+          return res;
+        })
+        .catch((err) => err);
+    } else {
+      axios
+        .patch(`http://localhost:3001/gamers/${gamer._id}/changeColor`, {
+          color: gamer.username.color,
+          type: 'username',
+        })
+        .then((res) => {
+          setUpdateListofGamers(true);
           return res;
         })
         .catch((err) => err);
@@ -203,8 +249,6 @@ const GamerProfile = () => {
       setToastNotification({});
     }
   }, []);
-
-  useEffect(() => {}, [showAbilityToChangeProfilePicture]);
 
   return (
     <>
@@ -308,27 +352,98 @@ const GamerProfile = () => {
                     </InputContainer>
                   ) : (
                     <NamesContainer>
-                      {gamer.firstName.length > 20 ? (
-                        <h3>{gamer.firstName}</h3>
-                      ) : gamer.firstName.length > 10 &&
-                        gamer.firstName.length < 20 ? (
-                        <h2>{gamer.firstName}</h2>
+                      {gamer.firstName.value.length > 20 ? (
+                        <H3
+                          onDoubleClick={() =>
+                            setDisplayAbilityToChangeTextColor({
+                              bool: !displayAbilityToChangeTextColor.bool,
+                              type: 'firstName',
+                            })
+                          }
+                          color={gamer.firstName.color}
+                        >
+                          {gamer.firstName.value}
+                        </H3>
+                      ) : gamer.firstName.value.length > 10 &&
+                        gamer.firstName.value.length < 20 ? (
+                        <H2
+                          onDoubleClick={() =>
+                            setDisplayAbilityToChangeTextColor({
+                              bool: !displayAbilityToChangeTextColor.bool,
+                              type: 'firstName',
+                            })
+                          }
+                          color={gamer.firstName.color}
+                        >
+                          {gamer.firstName.value}
+                        </H2>
                       ) : (
-                        gamer.firstName.length < 10 && (
-                          <h1>{gamer.firstName}</h1>
+                        gamer.firstName.value.length < 10 && (
+                          <H1
+                            onDoubleClick={() =>
+                              setDisplayAbilityToChangeTextColor({
+                                bool: !displayAbilityToChangeTextColor.bool,
+                                type: 'firstName',
+                              })
+                            }
+                            color={gamer.firstName.color}
+                          >
+                            {gamer.firstName.value}
+                          </H1>
                         )
                       )}
-                      {gamer.username.length > 20 ? (
-                        <h3>{gamer.username}</h3>
-                      ) : gamer.username.length > 10 &&
-                        gamer.username.length < 20 ? (
-                        <h2>{gamer.username}</h2>
+                      {gamer.username.value.length > 20 ? (
+                        <H3
+                          onDoubleClick={() =>
+                            setDisplayAbilityToChangeTextColor({
+                              bool: !displayAbilityToChangeTextColor.bool,
+                              type: 'username',
+                            })
+                          }
+                          color={gamer.username.color}
+                        >
+                          {gamer.username.value}
+                        </H3>
+                      ) : gamer.username.value.length > 10 &&
+                        gamer.username.value.length < 20 ? (
+                        <H2
+                          onDoubleClick={() =>
+                            setDisplayAbilityToChangeTextColor({
+                              bool: !displayAbilityToChangeTextColor.bool,
+                              type: 'username',
+                            })
+                          }
+                          color={gamer.username.color}
+                        >
+                          {gamer.username.value}
+                        </H2>
                       ) : (
-                        gamer.username.length < 10 && <h1>{gamer.username}</h1>
+                        gamer.username.value.length < 10 && (
+                          <H1
+                            onDoubleClick={() =>
+                              setDisplayAbilityToChangeTextColor({
+                                bool: !displayAbilityToChangeTextColor.bool,
+                                type: 'username',
+                              })
+                            }
+                            color={gamer.username.color}
+                          >
+                            {gamer.username.value}
+                          </H1>
+                        )
                       )}
                     </NamesContainer>
                   )}
-
+                  {displayAbilityToChangeTextColor.bool && (
+                    <TextColorChangerContainer>
+                      <input
+                        type='text'
+                        placeholder='#552efa'
+                        onChange={handleTextColorChange}
+                      />
+                      <button onClick={handleSaveTextColor}>Save</button>
+                    </TextColorChangerContainer>
+                  )}
                   <span onClick={() => setShowEditName(!showEditName)}>
                     edit
                   </span>
@@ -394,6 +509,23 @@ const GamerProfile = () => {
 
 export default GamerProfile;
 
+const TextColorChangerContainer = styled.div`
+  position: absolute;
+  border: 2px solid yellow;
+  width: 12rem;
+`;
+
+const H3 = styled.h3`
+  color: ${({ color }) => ` ${color}`};
+`;
+
+const H2 = styled.h2`
+  color: ${({ color }) => ` ${color}`};
+`;
+
+const H1 = styled.h1`
+  color: ${({ color }) => ` ${color}`};
+`;
 const StyleWrapper1 = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -431,10 +563,6 @@ const ImageUploadForm = styled.form`
   background: #2c2f33;
   box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
     rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
-
-  h4 {
-    color: #99aab5;
-  }
 
   .upload-button {
     margin-top: 1em;
@@ -481,15 +609,6 @@ const SingularGamer = styled.div`
   height: 650px;
   border-radius: 3px;
 
-  h1,
-  h2 {
-    color: #99aab5;
-  }
-
-  h3 {
-    color: ${({ color }) => color};
-  }
-
   .image-container {
     position: relative;
     width: 12rem;
@@ -497,7 +616,7 @@ const SingularGamer = styled.div`
     overflow: hidden;
     border-radius: 50%;
     box-shadow: 2px 3px 4px 1px rgba(18, 0, 12, 0.4);
-
+    border: 1px solid #99aab5;
     :active {
       box-shadow: 3px 4px 5px 2px rgba(18, 0, 12, 0.4);
     }
@@ -720,8 +839,7 @@ const EditProfilePicture = styled.div`
   color: lightblue;
   pointer-events: none;
   font-size: 1.1rem;
-  left: 50%;
-  bottom: 0%;
-  transform: translate(-50%, -357%);
-  width: 90%;
+  inset: 0;
+  margin: auto;
+  height: 1.5em;
 `;

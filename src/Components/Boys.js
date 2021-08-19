@@ -72,10 +72,10 @@ const Boys = () => {
             <>
               <BoyStyle>
                 <Profile>
-                  {item.username && item.username.length <= 20 ? (
-                    <h2>{item.username}</h2>
+                  {item.username && item.username.value.length <= 20 ? (
+                    <H2 color={item.username.color}>{item.username.value}</H2>
                   ) : (
-                    <h4>{item.username}</h4>
+                    <H4 color={item.username.color}>{item.username.value}</H4>
                   )}
                   <div className='image-container'>
                     <img src={item.profilePicture} alt={'Profile Picture'} />
@@ -105,6 +105,14 @@ const Boys = () => {
 };
 
 export default Boys;
+
+const H2 = styled.h2`
+  color: ${({ color }) => ` ${color}`};
+`;
+
+const H4 = styled.h4`
+  color: ${({ color }) => ` ${color}`};
+`;
 
 const BoyStyle = styled.div`
   text-align: center;
@@ -155,11 +163,6 @@ const Profile = styled.div`
   box-shadow: rgba(18, 0, 12, 0.8) 0px 6px 12px -2px,
     rgba(18, 0, 12, 0.8) 0px 3px 7px -3px;
   overflow-y: auto;
-
-  h2,
-  h4 {
-    color: #99aab5;
-  }
 
   .description {
     text-align: center;

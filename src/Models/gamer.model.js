@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const GamerSchema = mongoose.Schema(
   {
-    firstName: String,
-    username: String,
+    firstName: { value: String, color: String },
+    username: { value: String, color: String },
     hashPassword: String,
     posts: [{}],
     profilePicture: String,
@@ -15,4 +15,4 @@ const GamerSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Gamer", GamerSchema);
+module.exports = mongoose.model('Gamer', GamerSchema);

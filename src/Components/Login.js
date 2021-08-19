@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     axios
       .post('http://localhost:3001/auth/login', {
-        username: formData.username,
+        username: { value: formData.username },
         password: formData.password,
       })
       .then((res) => {
