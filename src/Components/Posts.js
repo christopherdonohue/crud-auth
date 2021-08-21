@@ -140,7 +140,7 @@ const Posts = () => {
                     />
                   </IconsContainer>
                 )}
-                <h2>{post.username}</h2>
+                <h2>{post.username.value}</h2>
                 {booleansArray && !booleansArray[index] && (
                   <PostContainer>
                     <div>{post.post}</div>

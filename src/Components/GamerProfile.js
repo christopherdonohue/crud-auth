@@ -188,7 +188,6 @@ const GamerProfile = () => {
   };
 
   const handleSaveTextColor = (color) => {
-    console.log(`server call`);
     if (displayAbilityToChangeTextColor.type === 'firstName') {
       axios
         .patch(`http://localhost:3001/gamers/${gamer._id}/changeColor`, {
@@ -523,7 +522,7 @@ export default GamerProfile;
 
 const TextColorChangerContainer = styled.div`
   width: 14rem;
-  transform: translate(85%, -50%);
+  transform: translate(85%, -46%);
 `;
 
 const H3 = styled.h3`

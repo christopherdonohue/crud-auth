@@ -65,7 +65,7 @@ exports.create = (req, res) => {
           authorizedData,
         });
         Gamer.updateOne(
-          { username: authorizedData.username },
+          { 'username.value': authorizedData.username },
           {
             $push: {
               posts: {
